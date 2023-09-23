@@ -10,6 +10,7 @@ const duration = require('dayjs/plugin/duration')
 const fr = require('dayjs/locale/fr')
 const weekday = require('dayjs/plugin/weekday')
 const { addReaction } = require('./activities/add-reaction')
+const { newMember } = require('./activities/new-member')
 
 dayjs.extend(relativeTime)
 dayjs.extend(localizedFormat)
