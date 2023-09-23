@@ -9,6 +9,7 @@ const timezone = require('dayjs/plugin/timezone')
 const duration = require('dayjs/plugin/duration')
 const fr = require('dayjs/locale/fr')
 const weekday = require('dayjs/plugin/weekday')
+const { addReaction } = require('./activities/add-reaction')
 
 dayjs.extend(relativeTime)
 dayjs.extend(localizedFormat)
@@ -77,6 +78,18 @@ for (const folder of commandFolders) {
     }
   }
 
+  for (const file of modalFiles) {
+    const filePath = path.join(commandsPath, file)
+    const modale = require(filePath)
+    if ('customId' in modale && 'execute' in modale) {
+      buttons.push(modale)
+    } else {
+      console.log(
+        `🟥 🟥  le chemin ${filePath} ne possède pas de champ  "customId"  ou "execute".`
+      )
+    }
+  }
+
   for (const file of buttonFiles) {
     const filePath = path.join(commandsPath, file)
     const button = require(filePath)
@@ -108,18 +121,12 @@ console.log('🟡')
     console.log('🟢')
   })
 
-  client.on(Events.GuildMemberAdd, async (member) => {
-    //TODO ici faire un truc pour les nouveaux arrivant
-  })
+  // événements Passifs - ne nécessitent pas d'interaction de l'utilisateur
+  client.on(Events.GuildMemberAdd, newMember)
+  client.on(Events.MessageCreate, postMessage)
+  client.on(Events.MessageReactionAdd, addReaction)
 
-  client.on(Events.MessageCreate, async (ev) => {
-    //  console.log('____', ev.content, ev)
-    //TODO ici faire un truc pour les nouveaux arrivant
-  })
-
-  client.on(Events.MessageReactionAdd, async (ev) => {
-    console.log(ev)
-  })
+  // événements Actifs - nécessitent une interaction de l'utilisateur
   client.on(Events.InteractionCreate, async (interaction) => {
     if (interaction.isStringSelectMenu()) {
       const select = selects.find((sel) => {

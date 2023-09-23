@@ -8,12 +8,6 @@ const { VALHALLA_URL, VALHALLA_TOKEN } = require('./constants')
  * @returns {Promise<object>} The response from the API
  */
 async function valhalla(endpoint, userId, body) {
-  console.log(
-    'valhalla',
-    VALHALLA_URL + '/api/midgard/' + endpoint,
-    userId,
-    body
-  )
   const res = await fetch(VALHALLA_URL + '/api/midgard/' + endpoint, {
     method: 'POST',
     headers: {
