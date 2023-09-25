@@ -35,8 +35,6 @@ const client = new Client({
     GatewayIntentBits.GuildMessageTyping,
     GatewayIntentBits.DirectMessageTyping,
     GatewayIntentBits.Guilds,
-    GatewayIntentBits.MessageContent,
-    GatewayIntentBits.GuildMessageReactions,
     GatewayIntentBits.GuildEmojisAndStickers,
   ],
   autoReconnect: true,

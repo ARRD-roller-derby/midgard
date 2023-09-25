@@ -21,6 +21,7 @@
     "dotenv": "^16.3.1",
     "filereader": "^0.10.3",
     "nodemon": "^3.0.1",
+    "openai": "^4.10.0",
     "validator": "^13.11.0"
   }
 }
