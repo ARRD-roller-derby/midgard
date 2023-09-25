@@ -40,6 +40,7 @@ module.exports = {
           presentMembers.includes(m.username) ||
           presentMembers.includes(m.nickname)
       )
+      .filter((m) => m.id !== interaction.user.id)
       .map((m) => `<@${m.id}>`)
 
       .join(', ')
@@ -54,7 +55,7 @@ module.exports = {
       reason: name,
     })
 
-    await thread.send(`Je tag les présents : ${members}`)
+    if (members) await thread.send(`Je tag les présents : ${members}`)
 
     await interaction.editReply({
       content: 'Le fil est créé !',
