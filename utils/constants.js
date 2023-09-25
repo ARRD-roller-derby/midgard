@@ -25,6 +25,7 @@ const VALHALLA_URL =
 const VALHALLA_TOKEN = process.env.VALHALLA_TOKEN || ''
 
 const CHANNEL_BLABLA_ID = process.env.CHANNEL_BLABLA_ID || ''
+const BRAVE_TOKEN_SEARCH = process.env.BRAVE_TOKEN_SEARCH || ''
 
 module.exports = {
   DISCORD_TOKEN: DISCORD_TOKEN || '',
@@ -37,4 +38,5 @@ module.exports = {
   VALHALLA_URL,
   VALHALLA_TOKEN,
   CHANNEL_BLABLA_ID,
+  BRAVE_TOKEN_SEARCH,
 }

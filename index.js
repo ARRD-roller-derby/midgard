@@ -12,6 +12,7 @@ const weekday = require('dayjs/plugin/weekday')
 const { addReaction } = require('./activities/add-reaction')
 const { newMember } = require('./activities/new-member')
 const { postMessage } = require('./activities/post-message')
+const { start } = require('./cron/start.cron')
 
 dayjs.extend(relativeTime)
 dayjs.extend(localizedFormat)
@@ -21,6 +22,7 @@ dayjs.extend(weekday)
 dayjs.locale(fr)
 dayjs.tz.guess()
 dayjs.tz.setDefault('Europe/Paris')
+
 console.log('🔴')
 
 const client = new Client({
@@ -119,6 +121,7 @@ console.log('🟡')
 ;(async () => {
   client.once(Events.ClientReady, () => {
     console.log('🟢')
+    start(client)
   })
 
   // événements Passifs - ne nécessitent pas d'interaction de l'utilisateur
