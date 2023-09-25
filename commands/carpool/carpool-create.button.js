@@ -47,7 +47,7 @@ module.exports = {
     const name = `${
       interaction.user.nickname || interaction.user.username
     } cherche un covoiturage pour ${textDate(event)}`
-    console.log(members)
+
     const thread = await channel.threads.create({
       name,
       autoArchiveDuration: 60 * 24,
