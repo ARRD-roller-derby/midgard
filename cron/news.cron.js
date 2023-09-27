@@ -8,7 +8,7 @@ const { Colors, EmbedBuilder } = require('discord.js')
 const file = './data/news.json'
 
 async function newsJob(client) {
-  console.log('You will see this message every second')
+  console.log('newsJob start')
   const channel = client.channels.cache.get(CHANNEL_BLABLA_ID)
   if (channel) {
     const news = jsonfile.readFileSync(file)
