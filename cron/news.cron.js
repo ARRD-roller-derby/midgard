@@ -4,6 +4,7 @@ const { webSearch } = require('../utils/web-search')
 const dayjs = require('dayjs')
 const { NodeHtmlMarkdown } = require('node-html-markdown')
 const { Colors, EmbedBuilder } = require('discord.js')
+const fs = require('fs')
 
 const file = './data/news.json'
 
@@ -11,6 +12,10 @@ async function newsJob(client) {
   console.log('🚀 Lancement de la tâche news')
   const channel = client.channels.cache.get(CHANNEL_BLABLA_ID)
   if (channel) {
+    if (!fs.existsSync(file)) {
+      fs.writeFileSync(file, JSON.stringify([]))
+    }
+
     const news = jsonfile.readFileSync(file)
     const search = await webSearch(
       `Roller Derby actualités ${dayjs().format('YYYY')}`

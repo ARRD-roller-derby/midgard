@@ -7,7 +7,7 @@ function start(client) {
   console.log('🚀 Lancement des tâches cron')
 
   const newsJobCron = new CronJob(
-    '30 11 * * *',
+    '0 11 * * * *',
     () => newsJob(client),
     null,
     true,
