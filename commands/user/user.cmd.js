@@ -7,6 +7,8 @@ module.exports = {
   data: new SlashCommandBuilder().setName('me').setDescription('Mon profil.'),
   async execute(interaction) {
     const me = await getMe(interaction)
+
+    console.log(me)
     const meEmbed = new EmbedBuilder()
       .setColor(Colors.green)
       .setTitle('Mon Profil')
@@ -16,6 +18,7 @@ module.exports = {
       })
       .addFields([
         { name: 'Porte-feuille', value: `${me.wallet} Dr.` },
+        { name: 'N° Licence', value: me.options_nlicence },
         {
           name: 'Pôles',
           value: getResume(
