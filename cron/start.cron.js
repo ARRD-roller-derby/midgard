@@ -3,7 +3,7 @@ const { CronJob } = require('cron')
 
 // Tâches cron
 
-function start(client) {
+function cronStart(client) {
   console.log('🚀 Lancement des tâches cron')
 
   const newsJobCron = new CronJob(
@@ -17,5 +17,5 @@ function start(client) {
 }
 
 module.exports = {
-  start,
+  cronStart,
 }
