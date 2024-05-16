@@ -3,9 +3,10 @@ import { DailyContests } from '../models/daily-contests.mjs'
 import { Questions } from '../models/questions.mjs'
 import { Users } from '../models/users.mjs'
 
+//for dev
 let start = false
 export async function dailyContestResult(client) {
-  if (start) return
+  //if (start) return
   console.log('🚀 Lancement de la tâche DAILY CONTEST RESULT')
 
   const channel = client.channels.cache.get(process.env.CHANNEL_BLABLA_ID)
