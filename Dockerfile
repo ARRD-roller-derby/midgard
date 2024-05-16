@@ -10,4 +10,4 @@ RUN pnpm install --frozen-lockfile
 
 COPY . .
 
-CMD ["node", "index.js"]
+CMD ["pnpm", "start"]
