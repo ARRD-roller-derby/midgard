@@ -10,4 +10,10 @@ RUN pnpm install --frozen-lockfile
 
 COPY . .
 
+# Copier le fichier .env
+COPY .env .env
+
+# Exécuter le script de déploiement des commandes Discord
+RUN pnpm run deploy:discord
+
 CMD ["pnpm", "start"]

@@ -10,3 +10,15 @@ services:
       - ./:/app
       - /app/node_modules
     command: ["pnpm", "start"]
+
+  deploy-discord:
+    build: .
+    container_name: discord-deploy
+    environment:
+      - NODE_ENV=production
+    command: ["pnpm", "deploy:discord"]
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    depends_on:
+      - app
