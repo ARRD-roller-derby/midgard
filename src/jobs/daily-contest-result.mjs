@@ -2,6 +2,7 @@ import validator from 'validator'
 import { DailyContests } from '../models/daily-contests.mjs'
 import { Questions } from '../models/questions.mjs'
 import { Users } from '../models/users.mjs'
+import { db } from '../utils/db.mjs'
 
 //for dev
 let start = false
@@ -17,6 +18,8 @@ export async function dailyContestResult(client) {
   }
 
   start = true
+
+  await db()
 
   const dailyContests = await DailyContests.findOne({
     updatedAt: {
