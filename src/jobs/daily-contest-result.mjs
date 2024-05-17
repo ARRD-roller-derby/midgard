@@ -31,7 +31,7 @@ export async function dailyContestResult(client) {
   if (!question) return console.error('Question not found')
 
   const answersWithEmoji = dailyContests.answers.map((qa) => {
-    const an = question.answers.find((a) => a._id.toString() === qa.answerId)
+    const an = question.answers.find((a) => a._id.toString() === qa.questionId)
     return {
       ...qa.toObject(),
       isGood: an.type === 'good',
