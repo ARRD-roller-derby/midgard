@@ -38,7 +38,7 @@ async function start() {
   )
 
   const dailyContestResultCron = new CronJob(
-    '5 18 * * *',
+    '16 18 * * *',
     () => dailyContestResult(client),
     null,
     true,
