@@ -51,7 +51,9 @@ export async function dailyContest(client) {
 
   dailyContest.updatedAt = new Date()
 
-  const answers = question.answers.map((answer, idx) => ({
+  const randomAnswers = question.answers.sort(() => Math.random() - 0.5)
+
+  const answers = randomAnswers.map((answer, idx) => ({
     isGood: false,
     answerId: answer._id,
     emoji: emojis[idx],
