@@ -13,8 +13,8 @@ import { dailyContestReaction } from '../commands/dailyContest/dailyContest.reac
 export async function reactionManager(interaction, user, type) {
   try {
     // Compléter les partials si nécessaire
-    if (interaction.message.partial) await reaction.message.fetch()
-    if (interaction.partial) await reaction.fetch()
+    if (interaction.message.partial) await interaction.message.fetch()
+    if (interaction.partial) await interaction.fetch()
     if (!user.partial) await user.fetch()
   } catch (error) {
     console.error('Erreur lors de la récupération de la réaction:', error)

@@ -23,14 +23,14 @@ async function start() {
 
   const newsJobCron = new CronJob(
     '0 10 * * *',
-    () => newsJob(client),
+    //   () => newsJob(client),
     null,
     true,
     'Europe/Paris'
   )
 
   const dailyContestCron = new CronJob(
-    '0 10 * * *',
+    '0 11 * * *',
     () => dailyContest(client),
     null,
     true,

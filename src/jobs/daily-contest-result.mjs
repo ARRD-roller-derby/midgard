@@ -52,7 +52,7 @@ export async function dailyContestResult(client) {
   const badUsers = dailyContests.userAnswers.filter((ua) =>
     ua.answers.some((a) => badAnswers.find((ba) => ba.emoji === a))
   )
-  let content = `## Résultat du concours du jour\n${validator.unescape(
+  let content = `## Résultat de la question du jour\n${validator.unescape(
     question.question
   )}\n\n`
   content += `### Bonnes réponses
