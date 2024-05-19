@@ -38,9 +38,8 @@ async function start() {
     'Europe/Paris'
   )
 
-  //'0 12 * * 1',
   const weekRulesCron = new CronJob(
-    '* * * * * *',
+    '0 11 * * 1',
     () => weekRules(client),
     null,
     true,

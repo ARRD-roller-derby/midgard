@@ -7,7 +7,7 @@ import { db } from '../utils/db.mjs'
 let start = false
 
 export async function weekRules(client) {
-  if (start) return
+  //  if (start) return
 
   const channel = client.channels.cache.get(process.env.CHANNEL_BLABLA_ID)
   if (!channel) {
