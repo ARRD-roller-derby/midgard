@@ -9,6 +9,7 @@ import weekday from 'dayjs/plugin/weekday.js'
 import { botStart } from './src/discord/discord.mjs'
 import { dailyContest } from './src/jobs/daily-contest.mjs'
 import { dailyContestResult } from './src/jobs/daily-contest-result.mjs'
+import { weekRules } from './src/jobs/week-rules.mjs'
 dayjs.extend(relativeTime)
 dayjs.extend(localizedFormat)
 dayjs.extend(timezone)
@@ -20,14 +21,6 @@ dayjs.tz.setDefault('Europe/Paris')
 
 async function start() {
   const client = await botStart()
-
-  const newsJobCron = new CronJob(
-    '0 10 * * *',
-    //   () => newsJob(client),
-    null,
-    true,
-    'Europe/Paris'
-  )
 
   const dailyContestCron = new CronJob(
     '0 10 * * *',
@@ -45,8 +38,18 @@ async function start() {
     'Europe/Paris'
   )
 
+  //'0 12 * * 1',
+  const weekRulesCron = new CronJob(
+    '* * * * * *',
+    () => weekRules(client),
+    null,
+    true,
+    'Europe/Paris'
+  )
+
   dailyContestCron.start(client)
   dailyContestResultCron.start(client)
+  weekRulesCron.start(client)
   console.log('Jobs started')
 }
 

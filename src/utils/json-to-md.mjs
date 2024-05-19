@@ -27,24 +27,20 @@ export function jsonToMd(contentArray) {
     } else if (content.type === 'heading') {
       markdown += '\n'
       markdown += `${'#'.repeat(content.attrs?.level ?? 0)} ${
-        content.content ? tiptapJsonToMd(content.content) : ''
+        content.content ? jsonToMd(content.content) : ''
       }\n`
     } else if (content.type === 'paragraph') {
-      markdown += `${content.content ? tiptapJsonToMd(content.content) : ''}\n`
+      markdown += `${content.content ? jsonToMd(content.content) : ''}\n`
     } else if (content.type === 'bulletList') {
       content?.content?.forEach((listItem) => {
-        markdown += `- ${
-          listItem.content ? tiptapJsonToMd(listItem.content) : ''
-        }\n`
+        markdown += `- ${listItem.content ? jsonToMd(listItem.content) : ''}\n`
       })
     } else if (content.type === 'quote') {
-      markdown += `> ${
-        content.content ? tiptapJsonToMd(content.content) : ''
-      }\n`
+      markdown += `> ${content.content ? jsonToMd(content.content) : ''}\n`
     }
 
     if (content.content) {
-      markdown += tiptapJsonToMd(content.content)
+      markdown += jsonToMd(content.content)
     }
   })
 
