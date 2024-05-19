@@ -16,6 +16,7 @@ const btn = {
     let content = ''
     if (customId === statsCustomId.btn.home) {
       content = await getResume(interaction)
+      delete body.files
     }
 
     if (customId === statsCustomId.btn.presence) {

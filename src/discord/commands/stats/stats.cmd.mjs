@@ -1,5 +1,6 @@
 import { SlashCommandBuilder } from 'discord.js'
 import { statsMenu } from './stats.utils.mjs'
+import { statsPresence } from './stats.presence.mjs'
 
 const cmd = {
   data: new SlashCommandBuilder()
@@ -19,7 +20,7 @@ const cmd = {
     }
 
     await interaction.reply({
-      content: 'Stats',
+      content: await statsPresence(interaction),
       ephemeral: true,
       components: statsMenu,
     })
