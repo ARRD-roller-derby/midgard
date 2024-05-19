@@ -19,8 +19,9 @@ dayjs.locale(fr)
 dayjs.tz.guess()
 dayjs.tz.setDefault('Europe/Paris')
 
+export let client
 async function start() {
-  const client = await botStart()
+  client = await botStart()
 
   const dailyContestCron = new CronJob(
     '0 10 * * *',

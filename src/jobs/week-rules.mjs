@@ -22,55 +22,59 @@ export async function weekRules(client) {
     .sort({ published_at: -1 })
     .limit(10)
 
-  const res = await fetch(URL_API_DERBY_FRANCE + 'rules')
-  const rules = await res.json()
-  const filteredRules = rules.filter(
-    (r) => !previousPublished.find((p) => p.chapter === r.chapter)
-  )
-
-  const weeklyRules = filteredRules.length ? filteredRules : rules
-
-  const random = Math.floor(Math.random() * weeklyRules.length)
-  const rule = weeklyRules[random]
-
-  await Rules.findOneAndUpdate(
-    {
-      chapter: rule.chapter,
-    },
-    {
-      published_at: new Date(),
-      chapter: rule.chapter,
-    }
-  )
-
-  const embed = new EmbedBuilder()
-    .setColor('#0099ff')
-    .setTitle(`Chapitre : ${rule.chapter}`)
-    .setDescription(
-      "Règle issue du document officiel de la WFTDA, traduit en français par Derby France. Pour consulter l'intégralité des règles, cliquez sur le lien ci-dessus."
+  try {
+    const res = await fetch(URL_API_DERBY_FRANCE + 'rules')
+    const rules = await res.json()
+    const filteredRules = rules.filter(
+      (r) => !previousPublished.find((p) => p.chapter === r.chapter)
     )
-    .setURL('https://static.wftda.com/rules/wftda-rules-french.pdf')
-    .setTimestamp()
 
-  const MAX_DESCRIPTION_LENGTH = 1700
+    const weeklyRules = filteredRules.length ? filteredRules : rules
 
-  if (rule.description.length > MAX_DESCRIPTION_LENGTH) {
-    const formattedDescription = rule.description
-      .split('. ')
-      .map((line) => line.trim())
-      .join('.\n')
-    const buffer = Buffer.from(formattedDescription, 'utf-8')
-    const attachment = new AttachmentBuilder(buffer, { name: 'rule.md' })
+    const random = Math.floor(Math.random() * weeklyRules.length)
+    const rule = weeklyRules[random]
 
-    await channel.send({
-      content: '## Règles de la semaine\n',
-      embeds: [embed],
-      files: [attachment],
-    })
-  } else {
-    await channel.send({
-      content: '## Règles de la semaine\n' + rule.description + '---\n\n',
-      embeds: [embed],
-    })
+    await Rules.findOneAndUpdate(
+      {
+        chapter: rule.chapter,
+      },
+      {
+        published_at: new Date(),
+        chapter: rule.chapter,
+      }
+    )
+
+    const embed = new EmbedBuilder()
+      .setColor('#0099ff')
+      .setTitle(`Chapitre : ${rule.chapter}`)
+      .setDescription(
+        "Règle issue du document officiel de la WFTDA, traduit en français par Derby France. Pour consulter l'intégralité des règles, cliquez sur le lien ci-dessus."
+      )
+      .setURL('https://static.wftda.com/rules/wftda-rules-french.pdf')
+      .setTimestamp()
+
+    const MAX_DESCRIPTION_LENGTH = 1700
+
+    if (rule.description.length > MAX_DESCRIPTION_LENGTH) {
+      const formattedDescription = rule.description
+        .split('. ')
+        .map((line) => line.trim())
+        .join('.\n')
+      const buffer = Buffer.from(formattedDescription, 'utf-8')
+      const attachment = new AttachmentBuilder(buffer, { name: 'rule.md' })
+
+      await channel.send({
+        content: '## Règles de la semaine\n',
+        embeds: [embed],
+        files: [attachment],
+      })
+    } else {
+      await channel.send({
+        content: '## Règles de la semaine\n' + rule.description + '---\n\n',
+        embeds: [embed],
+      })
+    }
+  } catch (error) {
+    console.error(error)
   }
 }
