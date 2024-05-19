@@ -10,9 +10,7 @@ const cmd = {
     .setName('next-training')
     .setDescription('Toutes les infos sur le prochain entraînement.'),
   async execute(interaction) {
-    const event = await valhalla('events/next-training', interaction.user.id, {
-      type: 'training',
-    })
+    const event = await valhalla('events/next-training', interaction.user.id)
     if (!event) {
       await interaction.reply({
         content: 'Aucun entraînement prévu pour le moment.',
