@@ -3,7 +3,6 @@ import { Events } from '../../../models/event.mjs'
 import { db } from '../../../utils/db.mjs'
 import { getMembers } from '../../../utils/get_members.mjs'
 import { Users } from '../../../models/users.mjs'
-import { asciiPercent } from '../../../utils/ascii-percent.mjs'
 import { AttachmentBuilder } from 'discord.js'
 
 export async function statsPresence() {
@@ -73,7 +72,10 @@ export async function statsPresence() {
     const presences = eventTypes.reduce((acc, type) => {
       const userParticipations = userParticipationByType[user.id][type]
       const totalTypeEvents = totalByType[type]
-      acc[type] = (userParticipations / totalTypeEvents) * 100
+      acc[type] = {
+        count: userParticipations,
+        percent: (userParticipations / totalTypeEvents) * 100,
+      }
       return acc
     }, {})
 
@@ -86,14 +88,18 @@ export async function statsPresence() {
 
   // Fonction pour convertir les données en CSV
   const convertToCSV = (data) => {
-    const headers = ['Name', 'Total Presence', ...eventTypes]
+    const headers = [
+      'Name',
+      'Total Presence',
+      ...eventTypes.map((type) => `Presence ${type}`),
+    ]
     const rows = data.map((presence) => {
       const row = [
         presence.user.name,
         presence.totalPresence.toFixed(2),
         ...eventTypes.map((type) =>
-          presence.presences[type]
-            ? presence.presences[type].toFixed(2)
+          presence.presences[type].percent
+            ? presence.presences[type].percent.toFixed(2)
             : '0.00'
         ),
       ]
@@ -109,13 +115,26 @@ export async function statsPresence() {
     attachment: new AttachmentBuilder(Buffer.from(csvData, 'utf-8'), {
       name: 'presences.csv',
     }),
-    content: presences
-      .sort((a, b) => b.totalPresence - a.totalPresence)
-      .map((presence) => {
-        return `\n- **${presence.user.name}** ${asciiPercent(
-          presence.totalPresence
-        )}`
-      })
-      .join(''),
+    content:
+      '## Présence aux entraînements (derby & patin)\n' +
+      presences
+        .map(({ presences, user }) => {
+          const combinedPresence =
+            presences['Cours de patinage'].count +
+            presences['Entraînement de derby'].count
+
+          const totalCombinedEvents = events.filter(({ type }) =>
+            type.match(/Cours de patinage|Entraînement de derby/)
+          ).length
+
+          const percent = (combinedPresence / totalCombinedEvents) * 100
+          return {
+            percent,
+            name: user.name,
+          }
+        })
+        .sort((a, b) => b.percent - a.percent)
+        .map(({ name, percent }) => `\n- ${percent.toFixed(0)}% **${name}**`)
+        .join(''),
   }
 }
