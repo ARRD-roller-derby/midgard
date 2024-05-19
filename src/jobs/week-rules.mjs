@@ -64,7 +64,7 @@ export async function weekRules(client) {
       const attachment = new AttachmentBuilder(buffer, { name: 'rule.md' })
 
       await channel.send({
-        content: '## Règles de la semaine\n',
+        content: '## Règle de la semaine\n',
         embeds: [embed],
         files: [attachment],
       })
