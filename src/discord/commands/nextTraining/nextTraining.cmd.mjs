@@ -21,7 +21,6 @@ const cmd = {
       return
     }
 
-    console.log(event)
     const participants = event.participants.filter(
       (p) => !p.type.match(/absent|conf/)
     )
