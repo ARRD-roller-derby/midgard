@@ -20,5 +20,6 @@ export const Users =
       mst: Boolean,
       msp: Boolean,
       roles: [RoleSchema],
+      available_cmds: [String],
     })
   )
