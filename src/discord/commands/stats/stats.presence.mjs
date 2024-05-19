@@ -26,13 +26,17 @@ export async function statsPresence() {
   const _users = await Users.find({})
   const members = await getMembers()
 
-  const users = _users.map((user) => {
-    const member = members.find((m) => m.id === user.providerAccountId)
-    return {
-      name: member?.username || member?.globalName || user.name,
-      id: user._id.toString(),
-    }
-  })
+  const users = _users
+    .map((user) => {
+      const member = members.find((m) => m.id === user.providerAccountId)
+      return {
+        name: member?.username || member?.globalName || user.name,
+        id: user._id.toString(),
+        bot: member?.bot,
+        roles: member?.roles,
+      }
+    })
+    .filter((user) => !user.bot && user.roles.includes('Membre'))
 
   // Calculer les taux de présence
   const totalEvents = events.length
