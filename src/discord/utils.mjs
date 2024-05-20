@@ -1,43 +1,6 @@
-const DEPLOY_TYPE = process.env.DEPLOY_TYPE || 'production'
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js'
 
-export const typeOfVisitorsJmsx = {
-  visitors: {
-    name: 'Visiteurs',
-    seat: 65,
-    price: 10,
-    emoji: '👥',
-  },
-  exhibitors: {
-    name: 'Exposants',
-    seat: 10,
-    price: 15,
-    emoji: '🎪',
-  },
-  students: {
-    name: 'Etudiants ISART',
-    seat: 20,
-    price: 0,
-    emoji: '🎓',
-  },
-  gamJam: {
-    name: 'Jammmeurs',
-    seat: 20,
-    price: 0,
-    emoji: '🕹',
-  },
-  staff: {
-    name: 'Staff',
-    seat: 10,
-    price: 0,
-    emoji: '🛠',
-  },
-  guests: {
-    name: 'Invités',
-    seat: 10,
-    price: 0,
-    emoji: '🎟',
-  },
-}
+const DEPLOY_TYPE = process.env.DEPLOY_TYPE || 'production'
 
 export const DISCORD_TOKEN =
   DEPLOY_TYPE !== 'production'
@@ -63,4 +26,40 @@ export function createAsciiBar(percentage) {
   const filledBar = '█'.repeat(filledLength)
   const emptyBar = '░'.repeat(emptyLength)
   return `${filledBar}${emptyBar} ${percentage}%`
+}
+
+export function createPagination(_page, end, customId) {
+  const page = parseInt(_page)
+
+  const first = new ButtonBuilder()
+    .setCustomId(`${customId}-first`)
+    .setLabel(`<<`)
+    .setStyle(ButtonStyle.Secondary)
+
+  const previous = new ButtonBuilder()
+    .setCustomId(`${customId}-${page - 1}`)
+    .setLabel(`<`)
+    .setStyle(ButtonStyle.Secondary)
+
+  const next = new ButtonBuilder()
+    .setCustomId(`${customId}-${page + 1}`)
+    .setLabel(`>`)
+    .setStyle(ButtonStyle.Secondary)
+
+  const last = new ButtonBuilder()
+    .setCustomId(`${customId}-last`)
+    .setLabel(`>>`)
+    .setStyle(ButtonStyle.Secondary)
+
+  if (page === 1) {
+    first.setDisabled(true)
+    previous.setDisabled(true)
+  }
+
+  if (page === end) {
+    next.setDisabled(true)
+    last.setDisabled(true)
+  }
+
+  return new ActionRowBuilder().addComponents(first, previous, next, last)
 }
