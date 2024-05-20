@@ -40,7 +40,7 @@ function confirmPresenceRow(
       .setLabel('Présence non confirmée')
       .setDisabled(myPresence.status === 'absent')
       .setStyle(
-        myPresence.status === 'absent'
+        myPresence.status === 'à confirmer'
           ? ButtonStyle.Danger
           : ButtonStyle.Secondary
       )
@@ -162,7 +162,7 @@ function createPresenceRow(
         )
         .setLabel('Absent.e')
         .setStyle(
-          myPresence.status === 'absent'
+          myPresence.status.match(/absent/)
             ? ButtonStyle.Danger
             : ButtonStyle.Secondary
         ),
@@ -250,7 +250,17 @@ export async function fetchEvents(interaction) {
       files: [],
       components: [
         createPagination(page, events.length, eventsCustomId.btn.pagination),
-        createPresenceRow(event._id, event.type, myPresence, page),
+        event.cancelled
+          ? new ActionRowBuilder().addComponents(
+              new ButtonBuilder()
+                .setCustomId(
+                  `${eventsCustomId.btn.info}-${event._id}-cancel-${page}`
+                )
+                .setLabel('Annulé')
+                .setDisabled(true)
+                .setStyle(ButtonStyle.Danger)
+            )
+          : createPresenceRow(event._id, event.type, myPresence, page),
         confirmPresenceRow(event._id, myPresence, page),
       ],
     }
