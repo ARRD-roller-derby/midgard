@@ -10,7 +10,6 @@ const cmd = {
     .setName('next-training')
     .setDescription('Toutes les infos sur le prochain entraînement.'),
   async execute(interaction) {
-    await interaction.deferReply({ ephemeral: true })
     try {
       const event = await valhalla('events/next-training', interaction.user.id)
       if (!event) {
