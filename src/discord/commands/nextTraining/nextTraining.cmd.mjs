@@ -13,11 +13,10 @@ const cmd = {
     try {
       const event = await valhalla('events/next-training', interaction.user.id)
       if (!event) {
-        await interaction.reply({
+        return await interaction.reply({
           content: 'Aucun entraînement prévu pour le moment.',
           ephemeral: true,
         })
-        return
       }
 
       const participants = event.participants.filter(
@@ -35,7 +34,7 @@ ${ participants
 .join(' ') } 
 */
 
-      await interaction.reply({
+      return await interaction.reply({
         content: `
  ## ${event.title}
 ${dayjs(event.start).format('LLL')}
@@ -52,11 +51,10 @@ ${event?.description?.content ? jsonToMd(event?.description?.content) : ''}
       })
     } catch (e) {
       console.error(e)
-      await interaction.reply({
+      return await interaction.reply({
         content: 'Une erreur est survenue.',
         ephemeral: true,
       })
-      return
     }
   },
 }
