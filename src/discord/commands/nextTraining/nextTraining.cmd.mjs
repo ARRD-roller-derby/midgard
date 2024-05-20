@@ -1,5 +1,4 @@
 import { SlashCommandBuilder } from 'discord.js'
-
 import { valhalla } from '../../../utils/valhalla.mjs'
 import dayjs from 'dayjs'
 import { jsonToMd } from '../../../utils/json-to-md.mjs'
@@ -11,11 +10,13 @@ const cmd = {
     .setDescription('Toutes les infos sur le prochain entraînement.'),
   async execute(interaction) {
     try {
+      // Déférer la réponse initiale pour garantir que l'interaction est répondue
+      await interaction.deferReply({ ephemeral: true })
+
       const event = await valhalla('events/next-training', interaction.user.id)
       if (!event) {
-        return await interaction.reply({
+        return await interaction.editReply({
           content: 'Aucun entraînement prévu pour le moment.',
-          ephemeral: true,
         })
       }
 
@@ -23,18 +24,7 @@ const cmd = {
         (p) => !p.type.match(/absent|conf/)
       )
 
-      /* ### Participant${participants.length > 1 ? 's' : ''} (${participants.length}) :
-${ participants
-  .sort((a, b) => {
-    if (a.type.match(/patineur/)) return -1
-    if (b.type.match(/patineur/)) return 1
-    return 0
-  })
-  .map((p) => `\n- **${p?.name}** - (${participationToEmoji(p.type)})`)
-.join(' ') } 
-*/
-
-      return await interaction.reply({
+      return await interaction.editReply({
         content: `
  ## ${event.title}
 ${dayjs(event.start).format('LLL')}
@@ -44,16 +34,13 @@ ${dayjs(event.start).format('LLL')}
 ${event?.description?.content ? jsonToMd(event?.description?.content) : ''}
 
 ## ${participants.length} participant${participants.length > 1 ? 's' : ''}
-
       `,
-        ephemeral: true,
-        //  components: [row],
       })
     } catch (e) {
       console.error(e)
-      return await interaction.reply({
+      // Utiliser editReply au lieu de reply dans le catch
+      return await interaction.editReply({
         content: 'Une erreur est survenue.',
-        ephemeral: true,
       })
     }
   },
