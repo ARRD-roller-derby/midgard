@@ -10,20 +10,22 @@ const cmd = {
     .setName('next-training')
     .setDescription('Toutes les infos sur le prochain entraînement.'),
   async execute(interaction) {
-    const event = await valhalla('events/next-training', interaction.user.id)
-    if (!event) {
-      await interaction.reply({
-        content: 'Aucun entraînement prévu pour le moment.',
-        ephemeral: true,
-      })
-      return
-    }
+    await interaction.deferReply({ ephemeral: true })
+    try {
+      const event = await valhalla('events/next-training', interaction.user.id)
+      if (!event) {
+        await interaction.reply({
+          content: 'Aucun entraînement prévu pour le moment.',
+          ephemeral: true,
+        })
+        return
+      }
 
-    const participants = event.participants.filter(
-      (p) => !p.type.match(/absent|conf/)
-    )
+      const participants = event.participants.filter(
+        (p) => !p.type.match(/absent|conf/)
+      )
 
-    /* ### Participant${participants.length > 1 ? 's' : ''} (${participants.length}) :
+      /* ### Participant${participants.length > 1 ? 's' : ''} (${participants.length}) :
 ${ participants
   .sort((a, b) => {
     if (a.type.match(/patineur/)) return -1
@@ -34,8 +36,8 @@ ${ participants
 .join(' ') } 
 */
 
-    await interaction.reply({
-      content: `
+      await interaction.reply({
+        content: `
  ## ${event.title}
 ${dayjs(event.start).format('LLL')}
 ### ${dayjs(event.start).format('HH:mm')} à ${dayjs(event.end).format('HH:mm')}
@@ -46,9 +48,17 @@ ${event?.description?.content ? jsonToMd(event?.description?.content) : ''}
 ## ${participants.length} participant${participants.length > 1 ? 's' : ''}
 
       `,
-      ephemeral: true,
-      //  components: [row],
-    })
+        ephemeral: true,
+        //  components: [row],
+      })
+    } catch (e) {
+      console.error(e)
+      await interaction.reply({
+        content: 'Une erreur est survenue.',
+        ephemeral: true,
+      })
+      return
+    }
   },
 }
 
