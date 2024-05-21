@@ -208,6 +208,7 @@ export async function fetchEvents(interaction) {
     const desc = jsonToMd(event?.description?.content || '')
 
     if (event.start) {
+      content += `### ${dayjs(event.start).format('LLL')}\n`
       content += `### ${dayjs(event.start).format('HH:mm')} à ${dayjs(
         event.end
       ).format('HH:mm')}\n`
