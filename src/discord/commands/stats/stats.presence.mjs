@@ -52,7 +52,10 @@ export async function statsPresence() {
         (event) =>
           event.type === type &&
           event.participants.some(
-            (p) => p.userId === user.id && p.status === 'présent'
+            (p) =>
+              p.userId === user.id &&
+              !p.type.match(/absent/) &&
+              !p.status.match(/absent/)
           )
       ).length
       return typeAcc
