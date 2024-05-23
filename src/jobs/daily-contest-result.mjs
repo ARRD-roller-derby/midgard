@@ -42,12 +42,16 @@ export async function dailyContestResult(client) {
     }
   })
 
-  //repondre à la question
   const goodAnswers = answersWithEmoji.filter((a) => a.isGood)
   const badAnswers = answersWithEmoji.filter((a) => !a.isGood)
-  const goodUsers = dailyContests.userAnswers.filter((ua) =>
-    ua.answers.every((a) => goodAnswers.find((ga) => ga.emoji === a))
-  )
+
+  const goodUsers = dailyContests.userAnswers.filter((ua) => {
+    return ua.answers.every(
+      (a) =>
+        goodAnswers.find((ga) => ga.emoji === a) &&
+        !badAnswers.find((ba) => ba.emoji === a)
+    )
+  })
 
   const badUsers = dailyContests.userAnswers.filter((ua) =>
     ua.answers.some((a) => badAnswers.find((ba) => ba.emoji === a))

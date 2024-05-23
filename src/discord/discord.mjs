@@ -211,7 +211,8 @@ export async function botStart() {
       }
     }
   })
-  client.login(process.envDISCORD_TOKEN)
+
+  client.login(process.env.DISCORD_TOKEN)
 
   return client
 }

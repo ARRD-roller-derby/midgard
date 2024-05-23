@@ -7,7 +7,9 @@
   "scripts": {
     "start": "nodemon --env-file=.env index.mjs",
     "deploy:discord": "node  --env-file=.env src/discord/deploy-commands.mjs",
-    "deploy:discord:prod": "node  --env-file=.env.prod src/discord/deploy-commands.mjs --dev"
+    "deploy:discord:prod": "node  --env-file=.env.prod src/discord/deploy-commands.mjs --dev",
+    "news": "node  --env-file=.env src/discord/what-news.mjs",
+    "news:prod": "node  --env-file=.env.prod src/discord/what-news.mjs"
   },
   "keywords": [],
   "author": {
