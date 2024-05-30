@@ -1,7 +1,10 @@
+import { client } from '../../../index.mjs'
+import { botAnswer } from './bot-answer.mjs'
+
 /**
  * @description Lorsque l'utilisateur envoie un message dans un salon
  */
-export async function postMessage(interaction, client) {
+export async function postMessage(interaction) {
   // Eviter les boucles infinies, si le message est envoyé par un bot, on ne fait rien
   if (interaction.author.bot) return
 
@@ -9,5 +12,6 @@ export async function postMessage(interaction, client) {
 
   if (!channel) return
 
-  // if (channel.name.match(/jmsx/)) return postMessageJmsx(interaction, client)
+  if (interaction?.mentions?.repliedUser?.id === process.env.DISCORD_CLIENT_ID)
+    botAnswer(interaction)
 }

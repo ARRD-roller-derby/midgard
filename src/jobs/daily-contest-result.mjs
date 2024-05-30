@@ -79,7 +79,7 @@ export async function dailyContestResult(client) {
   const message = await channel.messages.fetch(dailyContests.messageId)
 
   //Mettre à jour le portefeuille des utilisateurs
-  const incrementValue = 10 * goodUsers.length
+  const incrementValue = 50 * goodUsers.length
   await Users.updateMany(
     {
       providerAccountId: {

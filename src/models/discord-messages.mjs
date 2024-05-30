@@ -3,6 +3,7 @@ const { Schema, model, models } = pkg
 
 export const DISCORD_MESSAGE_TYPES = {
   dailyContest: 'dailyContest',
+  chatGpt: 'chatGpt',
 }
 
 export const DiscordMessages =
@@ -13,5 +14,7 @@ export const DiscordMessages =
       id: String,
       createdAt: Date,
       type: String, // discordMessages
+      threadId: String,
+      messageId: String,
     })
   )
