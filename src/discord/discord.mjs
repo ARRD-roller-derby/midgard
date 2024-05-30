@@ -1,11 +1,16 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'url'
-import { Client, Collection, Events, GatewayIntentBits } from 'discord.js'
+import {
+  Client,
+  Collection,
+  Events,
+  GatewayIntentBits,
+  Partials,
+} from 'discord.js'
 import { postMessage } from './activities/post-message.mjs'
 import { pathToFileURL } from 'node:url'
 import { reactionManager } from './activities/reaction-manager.mjs'
-import { Partials } from 'discord.js'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
