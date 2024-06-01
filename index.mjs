@@ -24,8 +24,8 @@ async function start() {
   client = await botStart()
 
   const dailyContestCron = new CronJob(
-    '0 10 * * *',
-    () => dailyContest(client),
+    '46 10 * * *',
+    dailyContest,
     null,
     true,
     'Europe/Paris'
@@ -33,7 +33,7 @@ async function start() {
 
   const dailyContestResultCron = new CronJob(
     '0 18 * * *',
-    () => dailyContestResult(client),
+    dailyContestResult,
     null,
     true,
     'Europe/Paris'
@@ -41,15 +41,15 @@ async function start() {
 
   const weekRulesCron = new CronJob(
     '0 11 * * 1',
-    () => weekRules(client),
+    weekRules,
     null,
     true,
     'Europe/Paris'
   )
 
-  dailyContestCron.start(client)
-  dailyContestResultCron.start(client)
-  weekRulesCron.start(client)
+  dailyContestCron.start()
+  dailyContestResultCron.start()
+  weekRulesCron.start()
   console.log('Jobs started')
 }
 

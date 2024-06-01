@@ -35,8 +35,6 @@ export async function dailyContestReaction(interaction, user, type) {
   } else {
     userAnswer.answers = userAnswer.answers.filter((a) => a !== emoji)
   }
-  console.log('dailyContestReaction -> userAnswer', userAnswer)
-
   await DailyContests.findOneAndUpdate(
     { messageId },
 

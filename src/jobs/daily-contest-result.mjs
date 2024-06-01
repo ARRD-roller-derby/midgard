@@ -3,10 +3,11 @@ import { DailyContests } from '../models/daily-contests.mjs'
 import { Questions } from '../models/questions.mjs'
 import { Users } from '../models/users.mjs'
 import { db } from '../utils/db.mjs'
+import { client } from '../../index.mjs'
 
 //for dev
 let start = false
-export async function dailyContestResult(client) {
+export async function dailyContestResult() {
   //if (start) return
   console.log('🚀 Lancement de la tâche DAILY CONTEST RESULT')
 
@@ -77,6 +78,7 @@ export async function dailyContestResult(client) {
 
   //Répondre au message
   const message = await channel.messages.fetch(dailyContests.messageId)
+  if (!message) return console.error('Message not found')
 
   //Mettre à jour le portefeuille des utilisateurs
   const incrementValue = 50 * goodUsers.length

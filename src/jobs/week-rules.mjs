@@ -2,11 +2,12 @@ import { EmbedBuilder, AttachmentBuilder } from 'discord.js'
 import { Rules } from '../models/rules.mjs'
 import { URL_API_DERBY_FRANCE } from '../utils/constants.mjs'
 import { db } from '../utils/db.mjs'
+import { client } from '../../index.mjs'
 
 //for dev
 let start = false
 
-export async function weekRules(client) {
+export async function weekRules() {
   //  if (start) return
 
   const channel = client.channels.cache.get(process.env.CHANNEL_BLABLA_ID)
