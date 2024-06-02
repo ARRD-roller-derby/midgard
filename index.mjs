@@ -24,7 +24,7 @@ async function start() {
   client = await botStart()
 
   const dailyContestCron = new CronJob(
-    '46 10 * * *',
+    '0 10 * * *',
     dailyContest,
     null,
     true,
