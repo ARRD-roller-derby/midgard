@@ -17,7 +17,7 @@ let start = false
 const emojis = ['🍉', '🍇', '🍌', '🍍', '🍎', '🍏', '🥥']
 
 export async function dailyContest() {
-  // if (start) return
+  //if (start) return
   console.log('🚀 Lancement de la tâche DAILY CONTEST')
 
   const channel = client.channels.cache.get(process.env.CHANNEL_BLABLA_ID)
@@ -76,6 +76,8 @@ export async function dailyContest() {
   content +=
     "\nRéagissez avec l'**emoji** correspondant à la/les bonne(s) réponse(s)."
   content += `\n*Réponse à 18h*`
+  content += `\n------------------------`
+  content += `\n⚠️ Les émojis sont réinitialisés toutes les 15 minutes. Les émojis 3️⃣, 2️⃣, 1️⃣, 0️⃣ apparaîtront environ 30 secondes avant la réinitialisation. Si vous voyez le compte à rebours, attendez avant de répondre pour sélectionner tous vos choix. ⚠️`
   content += `\n------------------------`
 
   const body = {

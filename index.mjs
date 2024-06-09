@@ -10,6 +10,7 @@ import { botStart } from './src/discord/discord.mjs'
 import { dailyContest } from './src/jobs/daily-contest.mjs'
 import { dailyContestResult } from './src/jobs/daily-contest-result.mjs'
 import { weekRules } from './src/jobs/week-rules.mjs'
+import { dailyContestCleanReaction } from './src/jobs/daily-contest-clean-reaction.mjs'
 dayjs.extend(relativeTime)
 dayjs.extend(localizedFormat)
 dayjs.extend(timezone)
@@ -39,6 +40,14 @@ async function start() {
     'Europe/Paris'
   )
 
+  const dailyContestCleanReactionCron = new CronJob(
+    '*/15 * * * *',
+    dailyContestCleanReaction,
+    null,
+    true,
+    'Europe/Paris'
+  )
+
   const weekRulesCron = new CronJob(
     '0 11 * * 1',
     weekRules,
@@ -50,6 +59,7 @@ async function start() {
   dailyContestCron.start()
   dailyContestResultCron.start()
   weekRulesCron.start()
+  dailyContestCleanReactionCron.start()
   console.log('Jobs started')
 }
 
