@@ -24,23 +24,10 @@ export let client
 async function start() {
   client = await botStart()
 
-  const dailyContestCron = new CronJob(
-    '0 10 * * *',
-    dailyContest,
-    null,
-    true,
-    'Europe/Paris'
-  )
-
-  const dailyContestResultCron = new CronJob(
-    '0 18 * * *',
-    dailyContestResult,
-    null,
-    true,
-    'Europe/Paris'
-  )
-
-  const dailyContestCleanReactionCron = new CronJob(
+  new CronJob('0 10 * * *', dailyContest, null, true, 'Europe/Paris')
+  new CronJob('0 18 * * *', dailyContestResult, null, true, 'Europe/Paris')
+  new CronJob('0 11 * * 1', weekRules, null, true, 'Europe/Paris')
+  new CronJob(
     '*/15 * * * *',
     dailyContestCleanReaction,
     null,
@@ -48,18 +35,6 @@ async function start() {
     'Europe/Paris'
   )
 
-  const weekRulesCron = new CronJob(
-    '0 11 * * 1',
-    weekRules,
-    null,
-    true,
-    'Europe/Paris'
-  )
-
-  dailyContestCron.start()
-  dailyContestResultCron.start()
-  weekRulesCron.start()
-  dailyContestCleanReactionCron.start()
   console.log('Jobs started')
 }
 
