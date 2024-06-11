@@ -19,9 +19,10 @@ dayjs.extend(weekday)
 dayjs.locale(fr)
 dayjs.tz.guess()
 dayjs.tz.setDefault('Europe/Paris')
-
+let init = false
 export let client
 async function start() {
+  if (init) return
   client = await botStart()
 
   new CronJob('0 10 * * *', dailyContest, null, true, 'Europe/Paris')
@@ -36,6 +37,7 @@ async function start() {
   )
 
   console.log('Jobs started')
+  init = true
 }
 
 start()
