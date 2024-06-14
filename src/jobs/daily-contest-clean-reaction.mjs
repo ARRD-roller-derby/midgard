@@ -28,6 +28,12 @@ export async function dailyContestCleanReaction() {
 
   if (!dailyContests) return console.log('No daily contest today')
 
+  try {
+    await channel.messages.fetch(dailyContests.messageId)
+  } catch (e) {
+    console.log('Message not found', e)
+    return
+  }
   const message = await channel.messages.fetch(dailyContests.messageId)
   if (!message) return console.error('Message not found')
 
