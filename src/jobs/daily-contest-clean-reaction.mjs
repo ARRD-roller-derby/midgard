@@ -33,15 +33,19 @@ export async function dailyContestCleanReaction() {
 
   const countdownEmojis = ['3️⃣', '2️⃣', '1️⃣', '0️⃣']
 
-  for (const emoji of countdownEmojis) {
-    await message.react(emoji)
-    await new Promise((resolve) => setTimeout(resolve, 10000)) // Attendre 10 secondes avant de passer au prochain émoji
-  }
+  try {
+    for (const emoji of countdownEmojis) {
+      await message.react(emoji)
+      await new Promise((resolve) => setTimeout(resolve, 10000)) // Attendre 10 secondes avant de passer au prochain émoji
+    }
 
-  await message.reactions.removeAll()
-  await Promise.all(
-    dailyContests.answers.map((answer) => {
-      return message.react(answer.emoji)
-    })
-  )
+    await message.reactions.removeAll()
+    await Promise.all(
+      dailyContests.answers.map((answer) => {
+        return message.react(answer.emoji)
+      })
+    )
+  } catch (e) {
+    console.error('Problem with message', dailyContests.messageId, e)
+  }
 }
