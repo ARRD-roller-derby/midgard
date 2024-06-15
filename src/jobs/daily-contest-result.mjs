@@ -61,7 +61,9 @@ export async function dailyContestResult() {
     question.question
   )}\n\n`
   content += `### Bonnes réponses
-    ${goodAnswers.map((a) => `${a.emoji} : ${a.answer}`).join('\n')}
+    ${goodAnswers
+      .map((a) => `${a.emoji} : ${validator.unescape(a.answer)}`)
+      .join('\n')}
     `
 
   if (goodUsers.length) {
