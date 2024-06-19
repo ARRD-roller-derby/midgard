@@ -39,10 +39,6 @@ async function start() {
 
   console.log('Jobs started')
   init = true
-  console.log('🚀 Lancement du bot', {
-    apiKey: process.env.CHAT_GPT_API,
-    organization: process.env.CHAT_GPT_ORG,
-  })
 }
 
 start()

@@ -64,8 +64,8 @@ export async function botAnswer(interaction) {
 
   if (
     baseMsg &&
-    baseMsg?.content?.includes('Question du jour') &&
-    baseMsg.content.includes('Réponse à 18h')
+    // baseMsg?.content?.includes('Question du jour') &&
+    baseMsg.content.includes('Réponse à 19h')
   ) {
     return await interaction.reply({
       content: response + '\n\n----',
