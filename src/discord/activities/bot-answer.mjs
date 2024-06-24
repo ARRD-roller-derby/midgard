@@ -50,7 +50,7 @@ const commands = [
 export async function botAnswer(interaction) {
   const reply = interaction.content
   const authorId = interaction.author.id
-  const messageId = interaction?.reference?.messageId
+  const messageId = interaction?.reference?.messageId || interaction.id
   const randomIndex = Math.floor(Math.random() * defaultsResponses.length)
   const response = defaultsResponses[randomIndex]
 
@@ -65,7 +65,8 @@ export async function botAnswer(interaction) {
   if (
     baseMsg &&
     // baseMsg?.content?.includes('Question du jour') &&
-    baseMsg.content.includes('Réponse à 19h')
+    baseMsg?.content &&
+    baseMsg.content.includes('Réponse à 18h')
   ) {
     return await interaction.reply({
       content: response + '\n\n----',

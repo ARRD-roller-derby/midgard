@@ -12,6 +12,13 @@ export async function postMessage(interaction) {
 
   if (!channel) return
 
-  if (interaction?.mentions?.repliedUser?.id === process.env.DISCORD_CLIENT_ID)
+  const isBotMention = interaction?.mentions?.users?.has(
+    process.env.DISCORD_CLIENT_ID
+  )
+
+  if (
+    interaction?.mentions?.repliedUser?.id === process.env.DISCORD_CLIENT_ID ||
+    isBotMention
+  )
     botAnswer(interaction)
 }
