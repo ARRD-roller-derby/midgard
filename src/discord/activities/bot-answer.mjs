@@ -47,6 +47,8 @@ const commands = [
   },
 ]
 
+const COST = 250
+
 export async function botAnswer(interaction) {
   const reply = interaction.content
   const authorId = interaction.author.id
@@ -85,9 +87,9 @@ export async function botAnswer(interaction) {
     providerAccountId: authorId,
   })
 
-  if (user.wallet < 50) {
-    content = response
-
+  if (user.wallet < COST) {
+    content =
+      'Désolée, tu n’as pas assez de 🐉 pour poser une question. Tu peux en gagner en participant aux événements ou en répondant au quizz du jour !'
     content += '\n\n----'
     return await interaction.reply({
       content: content,
@@ -95,7 +97,7 @@ export async function botAnswer(interaction) {
     })
   }
 
-  user.wallet -= 50
+  user.wallet -= COST
   await user.save()
   if (!existingMessage) {
     instructions = baseMsg.content
