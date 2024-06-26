@@ -45,24 +45,18 @@ export async function dailyContest() {
 
   const dailyContests = await DailyContests.find({
     updatedAt: {
-      //Plus de 5j
-      $lt: new Date(new Date().getTime() - 5 * 24 * 60 * 60 * 1000),
+      //les 7 derniers jours
+      $lt: new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000),
     },
   })
 
   const questions = await Questions.find({
     _id: {
-      $nin: dailyContests.map((dc) => dc.questionId),
+      $nin: dailyContests.map((dc) => ObjectId(dc.questionId)),
     },
   })
 
   const question = questions[Math.floor(Math.random() * questions.length)]
-
-  const dailyContest = await DailyContests.find({
-    questionId: question._id,
-  })
-
-  dailyContest.updatedAt = new Date()
 
   const randomAnswers = question.answers.sort(() => Math.random() - 0.5)
 
@@ -111,10 +105,6 @@ export async function dailyContest() {
 
   const msg = await channel.send(body)
 
-  const isExist = await DailyContests.findOne({
-    questionId: question._id,
-  })
-
   // Référence le message pour le retrouver plus tard
   await DiscordMessages.create({
     id: msg.id,
@@ -122,27 +112,13 @@ export async function dailyContest() {
     type: DISCORD_MESSAGE_TYPES.dailyContest,
   })
 
-  if (!isExist) {
-    await DailyContests.create({
-      questionId: question._id,
-      updatedAt: new Date(),
-      answers,
-      messageId: msg.id,
-      userAnswers: [],
-    })
-  } else {
-    await DailyContests.findOneAndUpdate(
-      {
-        questionId: question._id,
-      },
-      {
-        updatedAt: new Date(),
-        answers,
-        messageId: msg.id,
-        userAnswers: [],
-      }
-    )
-  }
+  await DailyContests.create({
+    questionId: question._id,
+    updatedAt: new Date(),
+    answers,
+    messageId: msg.id,
+    userAnswers: [],
+  })
 
   await Promise.all(
     answers.map((answer) => {
