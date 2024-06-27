@@ -1,7 +1,6 @@
 import { DailyContests } from '../models/daily-contests.mjs'
 import { Questions } from '../models/questions.mjs'
 import { db } from '../utils/db.mjs'
-import { ObjectId } from 'mongoose'
 import Canvas from '@napi-rs/canvas'
 
 import validator from 'validator'
@@ -11,6 +10,7 @@ import {
 } from '../models/discord-messages.mjs'
 import { AttachmentBuilder } from 'discord.js'
 import { client } from '../../index.mjs'
+import mongoose from 'mongoose' // Assurez-vous d'importer mongoose
 
 //for dev
 let start = false
@@ -51,9 +51,14 @@ export async function dailyContest() {
     },
   })
 
+  // Convertir les questionId de DailyContests en ObjectId
+  const usedQuestionIds = dailyContests.map((dc) =>
+    mongoose.Types.ObjectId(dc.questionId)
+  )
+
   const questions = await Questions.find({
     _id: {
-      $nin: dailyContests.map((dc) => ObjectId(dc.questionId)),
+      $nin: usedQuestionIds,
     },
   })
 
