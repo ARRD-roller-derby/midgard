@@ -1,7 +1,7 @@
 import { DailyContests } from '../models/daily-contests.mjs'
 import { Questions } from '../models/questions.mjs'
 import { db } from '../utils/db.mjs'
-import { ObjectId } from 'mongodb'
+import { ObjectId } from 'mongoose'
 import Canvas from '@napi-rs/canvas'
 
 import validator from 'validator'
