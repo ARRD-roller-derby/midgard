@@ -26,7 +26,7 @@ async function start() {
   if (init) return
   client = await botStart()
 
-  new CronJob('00 10 * * *', dailyContest, null, true, 'Europe/Paris')
+  new CronJob('42 10 * * *', dailyContest, null, true, 'Europe/Paris')
   new CronJob('0 18 * * *', dailyContestResult, null, true, 'Europe/Paris')
   new CronJob('0 11 * * 1', weekRules, null, true, 'Europe/Paris')
   new CronJob(
