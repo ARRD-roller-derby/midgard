@@ -10,7 +10,6 @@ import {
 } from '../models/discord-messages.mjs'
 import { AttachmentBuilder } from 'discord.js'
 import { client } from '../../index.mjs'
-import mongoose from 'mongoose' // Assurez-vous d'importer mongoose
 
 //for dev
 let start = false
@@ -52,17 +51,14 @@ export async function dailyContest() {
   })
 
   // Convertir les questionId de DailyContests en ObjectId
-  const usedQuestionIds = dailyContests.map((dc) =>
-    mongoose.Types.ObjectId(dc.questionId)
-  )
+  const usedQuestionIds = dailyContests.map((dc) => dc.questionId)
 
-  const questions = await Questions.find({
-    _id: {
-      $nin: usedQuestionIds,
-    },
-  })
+  const questions = await Questions.find({})
 
-  const question = questions[Math.floor(Math.random() * questions.length)]
+  const question = questions.filter((q) => {
+    if (usedQuestionIds.includes(q._id.toString())) return false
+    return true
+  })[Math.floor(Math.random() * questions.length)]
 
   const randomAnswers = question.answers.sort(() => Math.random() - 0.5)
 
