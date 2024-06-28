@@ -55,10 +55,11 @@ export async function dailyContest() {
 
   const questions = await Questions.find({})
 
-  const question = questions.filter((q) => {
-    if (usedQuestionIds.includes(q._id.toString())) return false
-    return true
-  })[Math.floor(Math.random() * questions.length)]
+  const filteredQuestions = questions.filter(
+    (q) => !usedQuestionIds.includes(q._id)
+  )
+  const question =
+    filteredQuestions[Math.floor(Math.random() * filteredQuestions.length)]
 
   const randomAnswers = question.answers.sort(() => Math.random() - 0.5)
 
