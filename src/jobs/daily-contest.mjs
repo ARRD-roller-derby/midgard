@@ -55,9 +55,10 @@ export async function dailyContest() {
   const questions = await Questions.find({})
   console.log(`Total Questions in DB: ${questions.length}`)
 
-  const filteredQuestions = questions.filter(
-    (q) => !usedQuestionIds.includes(q._id)
-  )
+  const filteredQuestions = questions.filter((q) => {
+    const isUsed = usedQuestionIds.find((id) => id === q._id)
+    return !isUsed
+  })
   console.log(`Filtered Questions Count: ${filteredQuestions.length}`)
 
   if (filteredQuestions.length === 0) {
