@@ -2,7 +2,6 @@ import { DailyContests } from '../models/daily-contests.mjs'
 import { Questions } from '../models/questions.mjs'
 import { db } from '../utils/db.mjs'
 import Canvas from '@napi-rs/canvas'
-
 import validator from 'validator'
 import {
   DISCORD_MESSAGE_TYPES,
@@ -29,7 +28,7 @@ const emojis = [
 ]
 
 export async function dailyContest() {
-  //if (start) return
+  // if (start) return
   console.log('🚀 Lancement de la tâche DAILY CONTEST')
 
   const channel = client.channels.cache.get(process.env.CHANNEL_BLABLA_ID)
@@ -43,23 +42,35 @@ export async function dailyContest() {
 
   await db()
 
+  const oneWeekAgo = new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000)
   const dailyContests = await DailyContests.find({
     updatedAt: {
-      //les 7 derniers jours
-      $lt: new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000),
+      $lt: oneWeekAgo,
     },
   })
 
-  // Convertir les questionId de DailyContests en ObjectId
   const usedQuestionIds = dailyContests.map((dc) => dc.questionId)
+  console.log(`Used Question IDs: ${usedQuestionIds}`)
 
   const questions = await Questions.find({})
+  console.log(`Total Questions in DB: ${questions.length}`)
 
   const filteredQuestions = questions.filter(
     (q) => !usedQuestionIds.includes(q._id)
   )
+  console.log(`Filtered Questions Count: ${filteredQuestions.length}`)
+
+  if (filteredQuestions.length === 0) {
+    console.log(
+      'No more questions available that haven’t been used in the last week.'
+    )
+    start = false
+    return
+  }
+
   const question =
     filteredQuestions[Math.floor(Math.random() * filteredQuestions.length)]
+  console.log(`Selected Question ID: ${question._id}`)
 
   const randomAnswers = question.answers.sort(() => Math.random() - 0.5)
 
@@ -108,7 +119,6 @@ export async function dailyContest() {
 
   const msg = await channel.send(body)
 
-  // Référence le message pour le retrouver plus tard
   await DiscordMessages.create({
     id: msg.id,
     createdAt: new Date(),
@@ -128,4 +138,6 @@ export async function dailyContest() {
       return msg.react(answer.emoji)
     })
   )
+
+  start = false
 }
