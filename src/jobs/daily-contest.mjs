@@ -52,10 +52,12 @@ export async function dailyContest() {
   const usedQuestionIds = dailyContests.map((dc) => dc.questionId)
   console.log(`Used Question IDs: ${usedQuestionIds}`)
 
-  const questions = await Questions.find({})
+  const questions = await Questions.find({
+    status: 'publish',
+  })
   console.log(`Total Questions in DB: ${questions.length}`)
 
-  const filteredQuestions = questions.filter((q) => {
+  const filteredQuestions = questions.toArray().filter((q) => {
     const isUsed = usedQuestionIds.find((id) => id === q._id)
     return !isUsed
   })

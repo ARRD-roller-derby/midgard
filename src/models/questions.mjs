@@ -11,9 +11,8 @@ export const Questions =
   model(
     'questions',
     new Schema({
-      providerAccountId: String,
-      wallet: Number,
       question: String,
+      status: String,
       answers: [Answer],
       img: String,
     })
