@@ -28,7 +28,7 @@ const emojis = [
 ]
 
 export async function dailyContest() {
-  // if (start) return
+  if (start) return
   console.log('🚀 Lancement de la tâche DAILY CONTEST')
 
   const channel = client.channels.cache.get(process.env.CHANNEL_BLABLA_ID)
@@ -53,14 +53,16 @@ export async function dailyContest() {
   console.log(`Used Question IDs: ${usedQuestionIds}`)
 
   const questions = await Questions.find({
-    status: 'publish',
+    status: {
+      $ne: 'draft',
+    },
   })
   console.log(`Total Questions in DB: ${questions.length}`)
 
-  const filteredQuestions = questions.toArray().filter((q) => {
-    const isUsed = usedQuestionIds.find((id) => id === q._id)
-    return !isUsed
-  })
+  const filteredQuestions = questions
+    .map((q) => q._id.toString())
+    .filter((q) => !!usedQuestionIds.find((id) => id === q))
+
   console.log(`Filtered Questions Count: ${filteredQuestions.length}`)
 
   if (filteredQuestions.length === 0) {
