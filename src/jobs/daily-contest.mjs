@@ -59,9 +59,9 @@ export async function dailyContest() {
   })
   console.log(`Total Questions in DB: ${questions.length}`)
 
-  const filteredQuestions = questions
-    .map((q) => q._id.toString())
-    .filter((q) => !!usedQuestionIds.find((id) => id === q))
+  const filteredQuestions = questions.filter(
+    (q) => !!usedQuestionIds.find((id) => id === q._id.toString())
+  )
 
   console.log(`Filtered Questions Count: ${filteredQuestions.length}`)
 
