@@ -10,7 +10,7 @@ import {
 import { AttachmentBuilder } from 'discord.js'
 import { client } from '../../index.mjs'
 
-//for dev
+//pour le développement
 let start = false
 
 const emojis = [
@@ -45,11 +45,11 @@ export async function dailyContest() {
   const oneWeekAgo = new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000)
   const dailyContests = await DailyContests.find({
     updatedAt: {
-      $lt: oneWeekAgo,
+      $gte: oneWeekAgo,
     },
   })
 
-  const usedQuestionIds = dailyContests.map((dc) => dc.questionId)
+  const usedQuestionIds = dailyContests.map((dc) => dc.questionId.toString())
   console.log(`Used Question IDs: ${usedQuestionIds}`)
 
   const questions = await Questions.find({
@@ -60,14 +60,14 @@ export async function dailyContest() {
   console.log(`Total Questions in DB: ${questions.length}`)
 
   const filteredQuestions = questions.filter(
-    (q) => !!usedQuestionIds.find((id) => id === q._id.toString())
+    (q) => !usedQuestionIds.includes(q._id.toString())
   )
 
   console.log(`Filtered Questions Count: ${filteredQuestions.length}`)
 
   if (filteredQuestions.length === 0) {
     console.log(
-      'No more questions available that haven’t been used in the last week.'
+      'Aucune question disponible qui n’a pas été utilisée la semaine dernière.'
     )
     start = false
     return
