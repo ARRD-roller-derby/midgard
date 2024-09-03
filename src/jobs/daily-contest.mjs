@@ -28,7 +28,7 @@ const emojis = [
 ]
 
 export async function dailyContest() {
-  if (start) return
+  // if (start) return
   console.log('🚀 Lancement de la tâche DAILY CONTEST')
 
   const channel = client.channels.cache.get(process.env.CHANNEL_BLABLA_ID)

@@ -16,6 +16,10 @@ export async function valhalla(endpoint, userId, body) {
     body: JSON.stringify(body),
   })
 
-  const { events } = await res.json()
+  const resJson = await res.json()
+  const { events } = resJson
+  // legacy compatibility
+  if (!events) return resJson
+
   return events
 }

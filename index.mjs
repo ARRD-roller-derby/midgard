@@ -11,6 +11,7 @@ import { dailyContest } from './src/jobs/daily-contest.mjs'
 import { dailyContestResult } from './src/jobs/daily-contest-result.mjs'
 import { weekRules } from './src/jobs/week-rules.mjs'
 import { dailyContestCleanReaction } from './src/jobs/daily-contest-clean-reaction.mjs'
+import { dailyBadges } from './src/jobs/daily-badges.mjs'
 dayjs.extend(relativeTime)
 dayjs.extend(localizedFormat)
 dayjs.extend(timezone)
@@ -26,9 +27,13 @@ async function start() {
   if (init) return
   client = await botStart()
 
+  // ===== DAILY =================================================================================================
   new CronJob('0 10 * * *', dailyContest, null, true, 'Europe/Paris')
   new CronJob('0 18 * * *', dailyContestResult, null, true, 'Europe/Paris')
+  new CronJob('0 19 30 * *', dailyBadges, null, true, 'Europe/Paris')
+  // ===== WEEKLY ===============================================================================================
   new CronJob('0 11 * * 1', weekRules, null, true, 'Europe/Paris')
+
   new CronJob(
     '*/15 * * * *',
     dailyContestCleanReaction,
