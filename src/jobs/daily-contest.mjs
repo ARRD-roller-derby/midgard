@@ -9,23 +9,10 @@ import {
 } from '../models/discord-messages.mjs'
 import { AttachmentBuilder } from 'discord.js'
 import { client } from '../../index.mjs'
+import { emojis } from '../utils/emojis.mjs'
 
 //pour le développement
 let start = false
-
-const emojis = [
-  '🍉',
-  '🍇',
-  '🍌',
-  '🍍',
-  '🍎',
-  '🍏',
-  '🥥',
-  '🥝',
-  '🍓',
-  '🍒',
-  '🫐',
-]
 
 export async function dailyContest() {
   // if (start) return
