@@ -30,6 +30,12 @@ const btn = {
     if (scope === 'level') {
       const life = parseInt(interaction.customId.split('-')[3])
 
+      const multiplier = {
+        1: 4,
+        2: 2,
+        3: 1,
+      }
+
       await Death.findOneAndUpdate(
         {
           providerAccountId: interaction.user.id,
@@ -38,7 +44,7 @@ const btn = {
           $set: {
             life,
             currentScore: 0,
-            currentLevel: life,
+            currentLevel: multiplier[life],
             questions: [],
           },
         }
