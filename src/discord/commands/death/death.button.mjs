@@ -105,49 +105,28 @@ const btn = {
 
     // ==== End of the game if no questions ====
     if (!_questions.length) {
-      const isBad = interaction.customId.split('-')[3] === 'bad'
-      if (isBad) user.life -= 1
+      let contentLoose = ''
+      contentLoose += `Tu as répondu à toutes les questions !\n\n`
+      contentLoose += '```markdown\n'
+      contentLoose += `🏆 Ton score actuel : ${user.currentScore}`
+      contentLoose += '```\n'
+      contentLoose += '```markdown\n'
+      contentLoose += `🏆 Ton meilleur score : ${bestScore}`
+      contentLoose += '```\n'
+      contentLoose += `--- \n`
 
-      if (user.life < 1) {
-        const bestScore =
-          user.bestScore < user.currentScore
-            ? user.currentScore
-            : user.bestScore
-        await Death.findOneAndUpdate(
-          {
-            providerAccountId: interaction.user.id,
-          },
-          {
-            $set: {
-              life: 0,
-              bestScore,
-            },
-          }
-        )
-
-        let contentLoose = ''
-        contentLoose += `Tu as répondu à toutes les questions !\n\n`
-        contentLoose += '```markdown\n'
-        contentLoose += `🏆 Ton score actuel : ${user.currentScore}`
-        contentLoose += '```\n'
-        contentLoose += '```markdown\n'
-        contentLoose += `🏆 Ton meilleur score : ${bestScore}`
-        contentLoose += '```\n'
-        contentLoose += `--- \n`
-
-        return interaction.editReply({
-          content: contentLoose,
-          components: [
-            new ActionRowBuilder().addComponents(
-              new ButtonBuilder()
-                .setCustomId(DeathCustomId.replay)
-                .setLabel('Rejouer')
-                .setStyle(ButtonStyle.Primary)
-            ),
-          ],
-          files: [],
-        })
-      }
+      return interaction.editReply({
+        content: contentLoose,
+        components: [
+          new ActionRowBuilder().addComponents(
+            new ButtonBuilder()
+              .setCustomId(DeathCustomId.replay)
+              .setLabel('Rejouer')
+              .setStyle(ButtonStyle.Primary)
+          ),
+        ],
+        files: [],
+      })
     }
 
     // Randomize questions
