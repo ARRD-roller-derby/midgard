@@ -10,6 +10,7 @@ export const Death =
       providerAccountId: String,
       bestScore: Number,
       currentScore: Number,
+      currentLevel: Number,
       life: Number,
       questions: [String],
     })
