@@ -197,6 +197,8 @@ const btn = {
           name: 'img.png',
         }),
       ]
+    } else {
+      res.files = []
     }
 
     let content = ''
