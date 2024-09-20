@@ -79,7 +79,9 @@ const btn = {
         let contentLoose = ''
         contentLoose += `💀💀💀\n\n`
         contentLoose += '```markdown\n'
-        contentLoose += `🏆 Ton score actuel : ${user.currentScore}`
+        contentLoose += `🏆 Ton score actuel : ${
+          user.currentScore * user.currentLevel
+        }`
         contentLoose += '```\n'
         contentLoose += '```markdown\n'
         contentLoose += `🏆 Ton meilleur score : ${bestScore}`
