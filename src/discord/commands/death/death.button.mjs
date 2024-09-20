@@ -60,10 +60,9 @@ const btn = {
       if (isBad) user.life -= 1
 
       if (user.life < 1) {
+        const currentScore = user.currentScore * user.currentLevel
         const bestScore =
-          user.bestScore < user.currentScore * user.currentLevel
-            ? user.currentScore * user.currentLevel
-            : user.bestScore
+          user.bestScore < currentScore ? currentScore : user.bestScore
         await Death.findOneAndUpdate(
           {
             providerAccountId: interaction.user.id,
@@ -79,9 +78,7 @@ const btn = {
         let contentLoose = ''
         contentLoose += `💀💀💀\n\n`
         contentLoose += '```markdown\n'
-        contentLoose += `🏆 Ton score actuel : ${
-          user.currentScore * user.currentLevel
-        }`
+        contentLoose += `🏆 Ton score actuel : ${currentScore}`
         contentLoose += '```\n'
         contentLoose += '```markdown\n'
         contentLoose += `🏆 Ton meilleur score : ${bestScore}`
