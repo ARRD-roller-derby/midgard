@@ -5,7 +5,6 @@ import { DeathCustomId } from './death.custom-id.mjs'
 import { Death } from '../../../models/death.mjs'
 import { getMembers } from '../../../utils/get_members.mjs'
 import { getUserName } from '../../../utils/get-user-name.mjs'
-import { DEATH_LEVELS } from '../../../utils/constants.mjs'
 
 export async function getHomeDeath(interaction) {
   await db()
@@ -37,15 +36,15 @@ export async function getHomeDeath(interaction) {
   const row = new ActionRowBuilder().addComponents(
     new ButtonBuilder()
       .setCustomId(DeathCustomId.noob)
-      .setLabel(DEATH_LEVELS.noob)
+      .setLabel('🍼 Noob (💚💚💚)')
       .setStyle(ButtonStyle.Secondary),
     new ButtonBuilder()
       .setCustomId(DeathCustomId.normal)
-      .setLabel(DEATH_LEVELS.normal)
+      .setLabel('🛼 Normal (💚💚)')
       .setStyle(ButtonStyle.Secondary),
     new ButtonBuilder()
       .setCustomId(DeathCustomId.hard)
-      .setLabel(DEATH_LEVELS.hard)
+      .setLabel('💀 Aard (💚)')
       .setStyle(ButtonStyle.Secondary)
   )
 
@@ -56,7 +55,7 @@ export async function getHomeDeath(interaction) {
 
   if (bestUser) {
     const user = users.find((user) => user.id === bestUser.providerAccountId)
-    if (user)
+    if (user.id)
       content += `🥇 **${getUserName(
         user
       )}** est en tête du classement avec un score de **${

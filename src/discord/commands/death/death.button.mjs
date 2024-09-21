@@ -104,7 +104,12 @@ const btn = {
       status: {
         $ne: 'draft',
       },
-
+      answers: {
+        $elemMatch: { type: 'good' },
+        $not: {
+          $size: 2, // Filtre pour exclure les questions avec plus d'un "good"
+        },
+      },
       _id: {
         $nin: user.questions.map((q) => q._id),
       },
@@ -112,6 +117,9 @@ const btn = {
 
     // ==== End of the game if no questions ====
     if (!_questions.length) {
+      const currentScore = user.currentScore * user.currentLevel
+      const bestScore =
+        user.bestScore < currentScore ? currentScore : user.bestScore
       let contentLoose = ''
       contentLoose += `Tu as répondu à toutes les questions !\n\n`
       contentLoose += '```markdown\n'
