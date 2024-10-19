@@ -87,7 +87,7 @@ export async function dailyContest() {
   content += `\n------------------------`
   content +=
     "\nRéagissez avec l'**emoji** correspondant à la/les bonne(s) réponse(s)."
-  content += `\n*Réponse à 18h*`
+  content += `\n*Réponse à 19h45*`
   content += `\n------------------------`
   content += `\n⚠️ Les émojis sont réinitialisés toutes les 15 minutes. Les émojis 3️⃣, 2️⃣, 1️⃣, 0️⃣ apparaîtront environ 30 secondes avant la réinitialisation. Si vous voyez le compte à rebours, attendez avant de répondre pour sélectionner tous vos choix. ⚠️`
   content += `\n------------------------`
