@@ -4,10 +4,16 @@ import { UserBadges } from '../models/user_badges.mjs'
 import { db } from '../utils/db.mjs'
 
 const emojiMedal = {
-  or: '🥇',
-  argent: '🥈',
-  bronze: '🥉',
+  'safe-skills-1': '🥚',
+  'safe-skills-2': '🐣',
+  'safe-skills-3': '🐦',
+  'roue-jaune': '🟡',
+  'roue-verte': '🟢',
+  'roue-bleue': '🔵',
+  advanced: '🐉',
+  'vie-asso': '🎲',
 }
+
 //for dev
 let start = false
 export async function dailyBadges() {
