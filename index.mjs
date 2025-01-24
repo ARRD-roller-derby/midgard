@@ -30,7 +30,7 @@ async function start() {
   // ===== DAILY =================================================================================================
   new CronJob('0 10 * * *', dailyContest, null, true, 'Europe/Paris')
   new CronJob('45 19 * * *', dailyContestResult, null, true, 'Europe/Paris')
-  new CronJob('30 19 * * *', dailyBadges, null, true, 'Europe/Paris')
+  new CronJob('15 21 * * *', dailyBadges, null, true, 'Europe/Paris')
   // ===== WEEKLY ===============================================================================================
   new CronJob('0 11 * * 1', weekRules, null, true, 'Europe/Paris')
 
