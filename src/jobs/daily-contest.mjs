@@ -117,6 +117,13 @@ export async function dailyContest() {
     type: DISCORD_MESSAGE_TYPES.dailyContest,
   })
 
+  await DailyContests.updateMany(
+    {
+      questionId: question._id,
+    },
+    { userAnswers: [] }
+  )
+
   await DailyContests.create({
     questionId: question._id,
     updatedAt: new Date(),
