@@ -47,6 +47,10 @@ export async function dailyContestResult() {
   const badAnswers = answersWithEmoji.filter((a) => !a.isGood)
 
   const goodUsers = dailyContests.userAnswers.filter((ua) => {
+    // Vérifie que l'utilisateur a donné exactement le bon nombre de réponses
+    if (ua.answers.length !== goodAnswers.length) return false
+
+    // Vérifie que toutes les réponses sont bonnes
     return ua.answers.every(
       (a) =>
         goodAnswers.find((ga) => ga.emoji === a) &&
@@ -54,9 +58,15 @@ export async function dailyContestResult() {
     )
   })
 
-  const badUsers = dailyContests.userAnswers.filter((ua) =>
-    ua.answers.some((a) => badAnswers.find((ba) => ba.emoji === a))
-  )
+  const badUsers = dailyContests.userAnswers.filter((ua) => {
+    // L'utilisateur est considéré comme mauvais s'il a:
+    // - Soit donné une mauvaise réponse
+    // - Soit donné trop ou pas assez de réponses
+    return (
+      ua.answers.some((a) => badAnswers.find((ba) => ba.emoji === a)) ||
+      ua.answers.length !== goodAnswers.length
+    )
+  })
   let content = `## Résultat de la question du jour\n${validator.unescape(
     question.question
   )}\n\n`
