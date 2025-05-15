@@ -5,11 +5,6 @@ const btn = {
   execute: async (interaction) => {
     await interaction.deferUpdate()
 
-    console.log(
-      'dailyContest button clicked',
-      interaction.user.id,
-      interaction.customId
-    )
   },
 }
 
