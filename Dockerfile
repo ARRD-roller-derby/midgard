@@ -10,4 +10,4 @@ RUN pnpm install --frozen-lockfile
 
 COPY . .
 
-CMD ["pnpm", "start:server"]
+CMD ["node", "index.mjs"]
