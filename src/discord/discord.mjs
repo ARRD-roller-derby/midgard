@@ -16,6 +16,9 @@ const __dirname = path.dirname(__filename)
 
 console.log('🔴')
 
+console.log('ENV:', process.env.NODE_ENV)
+console.log('VALHALLA_URL:', process.env.VALHALLA_URL)
+
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
