@@ -10,4 +10,4 @@ RUN pnpm install --frozen-lockfile
 
 COPY . .
 
-run pnpm start:server
+CMD ["pnpm", "start:server"]
