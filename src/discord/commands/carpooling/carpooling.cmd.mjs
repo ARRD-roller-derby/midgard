@@ -9,6 +9,20 @@ import {
 import { CarpoolingCustomId } from './carpooling.custom-id.mjs'
 import { valhalla } from '../../../utils/valhalla.mjs'
 
+function formatAddress(address) {
+  if (!address.label) return address.label
+
+  // Si l'adresse contient "google" et "maps" mais pas de @, on reconstruit l'URL
+  if (address.label.toLowerCase().includes('google') &&
+    address.label.toLowerCase().includes('maps') &&
+    !address.label.includes('@')) {
+    const { lat, lon } = address
+    return `https://www.google.com/maps?q=${lat},${lon}`
+  }
+
+  return address.label
+}
+
 const cmd = {
   data: new SlashCommandBuilder()
     .setName('covoit')
@@ -68,14 +82,14 @@ const cmd = {
         content += 'Aucun covoiturage n\'a été créé pour cet événement.\n'
       } else {
         carpooling.forEach((carpool) => {
-
           const confirmed = carpool.participants.filter(p => p.status === 'confirmed')
           const pending = carpool.participants.filter(p => p.status === 'pending')
 
           content += `### Covoiturage de ${carpool?.name}\n`
-          content += `📍 ${carpool.address.label}\n`
+          content += `📍 ${formatAddress(carpool.address)}\n`
           content += `🕒 ${new Date(carpool.date).toLocaleString()}\n`
-          content += `🚗 Places disponibles : ${carpool.places - confirmed.length}\n\n`
+          content += `🚗 Places disponibles : ${carpool.places - confirmed.length}\n`
+          content += `🔗 [Voir le message](${carpool.messageUrl})\n\n`
 
           if (confirmed.length > 0) {
             content += '**Confirmés :**\n'
@@ -100,18 +114,6 @@ const cmd = {
         .setStyle(ButtonStyle.Primary)
 
       rows.push(new ActionRowBuilder().addComponents(createButton))
-
-      // Boutons pour les covoiturages existants
-      if (carpooling.length > 0) {
-        carpooling.forEach((carpool) => {
-          const linkButton = new ButtonBuilder()
-            .setCustomId(`${CarpoolingCustomId.link}${carpool.messageId}`)
-            .setLabel(`Rejoindre le covoiturage de ${carpool.participants.find(p => p.status === 'leader')?.name || 'Inconnu'}`)
-            .setStyle(ButtonStyle.Secondary)
-
-          rows.push(new ActionRowBuilder().addComponents(linkButton))
-        })
-      }
 
       await interaction.editReply({
         content,
