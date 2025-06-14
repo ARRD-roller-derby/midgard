@@ -6,7 +6,7 @@ const modal = {
   customId: CarpoolingCustomId.modal,
   execute: async (interaction) => {
     try {
-      await interaction.deferReply({ ephemeral: true })
+      await interaction.deferReply({ flags: MessageFlags.Ephemeral })
 
       const places = parseInt(interaction.fields.getTextInputValue('places'))
       const address = interaction.fields.getTextInputValue('address')
