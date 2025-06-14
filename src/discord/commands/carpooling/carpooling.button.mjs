@@ -40,11 +40,10 @@ const btn = {
       content += 'Aucun covoiturage n\'a été créé pour cet événement.\n'
     } else {
       carpooling.forEach((carpool) => {
-        const leader = carpool.participants.find(p => p.status === 'leader')
         const confirmed = carpool.participants.filter(p => p.status === 'confirmed')
         const pending = carpool.participants.filter(p => p.status === 'pending')
 
-        content += `### Covoiturage de ${leader.name}\n`
+        content += `### Covoiturage de ${carpool.name}\n`
         content += `📍 ${carpool.address.label}\n`
         content += `🕒 ${new Date(carpool.date).toLocaleString()}\n`
         content += `🚗 Places disponibles : ${carpool.places - confirmed.length}\n\n`
