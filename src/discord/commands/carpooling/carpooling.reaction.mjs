@@ -1,5 +1,23 @@
 import { valhalla } from '../../../utils/valhalla.mjs'
 
+function formatAddress(address) {
+  if (!address.label) return address.label
+
+  // Si l'adresse contient "google" et "maps" mais pas de @, on reconstruit l'URL
+  if (address.label.toLowerCase().includes('google') &&
+    address.label.toLowerCase().includes('maps') &&
+    !address.label.includes('@')) {
+    // Extraire les coordonnées de l'URL
+    const coordsMatch = address.label.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/)
+    if (coordsMatch) {
+      const [_, lat, lng] = coordsMatch
+      return `https://www.google.com/maps?q=${lat},${lng}`
+    }
+  }
+
+  return address.label
+}
+
 export async function carpoolingReaction(reaction, user) {
   // Ignorer les réactions du bot
   if (user.bot) return
@@ -46,7 +64,7 @@ export async function carpoolingReaction(reaction, user) {
     const leader = carpool.participants.find(p => p.status === 'leader')
 
     let content = `🚗 **Covoiturage créé par ${leader?.name || ''}**\n` +
-      `📍 ${carpool.address.label}\n` +
+      `📍 ${formatAddress(carpool.address)}\n` +
       `🕒 ${new Date(carpool.date).toLocaleString()}\n` +
       `👥 Places disponibles : ${carpool.places - confirmed.length}\n\n`
 
