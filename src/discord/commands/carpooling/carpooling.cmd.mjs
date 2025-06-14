@@ -13,12 +13,10 @@ const cmd = {
   data: new SlashCommandBuilder()
     .setName('covoit')
     .setDescription('gérer les covoiturages'),
-  async execute(interaction, isUpdate = false) {
+  async execute(interaction) {
     try {
-      // Attendre que l'interaction soit complètement chargée
       await interaction.deferReply({ flags: MessageFlags.Ephemeral })
 
-      // Vérifier si le channel est disponible
       if (!interaction.channel) {
         await interaction.editReply({
           content: 'Impossible d\'accéder au canal. Veuillez réessayer.',
