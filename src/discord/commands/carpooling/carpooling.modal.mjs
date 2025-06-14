@@ -78,7 +78,7 @@ const modal = {
       // Créer d'abord le message avec l'émoji personnalisé
       const carpoolMessage = await interaction.channel.send({
         content: `🚗 **Covoiturage créé par ${interaction.user.username}**\n` +
-          `📍 ${addressLabel}\n` +
+          `📍 ${address}\n` +
           `🕒 ${departureDate.toLocaleString()}\n` +
           `👥 Places disponibles : ${places}\n\n` +
           `Réagissez avec 🚗 pour participer !`
