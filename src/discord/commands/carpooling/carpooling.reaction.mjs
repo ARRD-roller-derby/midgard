@@ -59,9 +59,8 @@ export async function carpoolingReaction(reaction, user) {
     // Mettre à jour le message
     const confirmed = carpool.participants.filter(p => p.status === 'confirmed')
     const pending = carpool.participants.filter(p => p.status === 'pending')
-    const leader = carpool.participants.find(p => p.status === 'leader')
 
-    let content = `🚗 **Covoiturage créé par ${leader?.name || ''}**\n` +
+    let content = `🚗 **Covoiturage créé par ${carpool?.name || ''}**\n` +
       `📍 ${formatAddress(carpool.address)}\n` +
       `🕒 ${new Date(carpool.date).toLocaleString()}\n` +
       `👥 Places disponibles : ${carpool.places - confirmed.length}\n\n`
