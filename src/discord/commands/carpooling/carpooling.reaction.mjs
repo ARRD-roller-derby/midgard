@@ -7,12 +7,10 @@ function formatAddress(address) {
   if (address.label.toLowerCase().includes('google') &&
     address.label.toLowerCase().includes('maps') &&
     !address.label.includes('@')) {
-    // Extraire les coordonnées de l'URL
-    const coordsMatch = address.label.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/)
-    if (coordsMatch) {
-      const [_, lat, lng] = coordsMatch
-      return `https://www.google.com/maps?q=${lat},${lng}`
-    }
+
+    const { lat, lng } = address
+    return `https://www.google.com/maps?q=${lat},${lng}`
+
   }
 
   return address.label
