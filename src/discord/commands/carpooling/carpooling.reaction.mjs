@@ -8,7 +8,7 @@ function formatAddress(address) {
     address.label.toLowerCase().includes('maps') &&
     !address.label.includes('@')) {
 
-    const { lat, toLocaleString } = address
+    const { lat, lon } = address
     return `https://www.google.com/maps?q=${lat},${lon}`
 
   }
