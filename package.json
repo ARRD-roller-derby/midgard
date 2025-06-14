@@ -27,7 +27,7 @@
     "@napi-rs/canvas": "^0.1.52",
     "cron": "^2.4.4",
     "dayjs": "^1.11.10",
-    "discord.js": "^14.13.0",
+    "discord.js": "^14.19.3",
     "dotenv": "^16.3.1",
     "filereader": "^0.10.3",
     "jsdom": "^23.2.0",

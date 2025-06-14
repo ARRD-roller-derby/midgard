@@ -1,4 +1,4 @@
-import { ActionRowBuilder, ButtonStyle, ButtonBuilder } from 'discord.js'
+import { ActionRowBuilder, ButtonStyle, ButtonBuilder, MessageFlags } from 'discord.js'
 
 import { db } from '../../../utils/db.mjs'
 import { DeathCustomId } from './death.custom-id.mjs'
@@ -58,9 +58,8 @@ export async function getHomeDeath(interaction) {
     if (user.id)
       content += `🥇 **${getUserName(
         user
-      )}** est en tête du classement avec un score de **${
-        bestUser.bestScore
-      }**.\n\n`
+      )}** est en tête du classement avec un score de **${bestUser.bestScore
+        }**.\n\n`
   }
 
   content += '```markdown\n'
@@ -72,7 +71,7 @@ export async function getHomeDeath(interaction) {
 
   return {
     content: content,
-    ephemeral: true,
+    flags: MessageFlags.Ephemeral,
     components: [row],
   }
 }

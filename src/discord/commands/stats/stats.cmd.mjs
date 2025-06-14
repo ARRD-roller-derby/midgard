@@ -1,4 +1,4 @@
-import { SlashCommandBuilder } from 'discord.js'
+import { MessageFlags, SlashCommandBuilder } from 'discord.js'
 import { getResume, statsMenu } from './stats.utils.mjs'
 
 const cmd = {
@@ -13,14 +13,14 @@ const cmd = {
     if (!memberRoles.match(/bureau|dev/i)) {
       await interaction.reply({
         content: "Tu n'as pas les droits pour voir les stats.",
-        ephemeral: true,
+        flags: MessageFlags.Ephemeral,
       })
       return
     }
 
     await interaction.reply({
       content: await getResume(interaction),
-      ephemeral: true,
+      flags: MessageFlags.Ephemeral,
       components: statsMenu,
     })
   },

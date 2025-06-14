@@ -1,4 +1,4 @@
-import { SlashCommandBuilder } from 'discord.js'
+import { MessageFlags, SlashCommandBuilder } from 'discord.js'
 import { URL_API_DERBY_FRANCE } from '../../../utils/constants.mjs'
 import { EmbedBuilder } from 'discord.js'
 import { AttachmentBuilder } from 'discord.js'
@@ -21,7 +21,7 @@ const cmd = {
     if (!res.ok) {
       await interaction.reply({
         content: 'Impossible de récupérer les règles.',
-        ephemeral: true,
+        flags: MessageFlags.Ephemeral,
       })
       return
     }
@@ -50,7 +50,7 @@ const cmd = {
       content: `## Résultat de ta recherche (${search})\n\n----`,
       embeds: [embed],
       files: [attachment],
-      ephemeral: true,
+      flags: MessageFlags.Ephemeral,
     })
   },
 }

@@ -6,6 +6,7 @@ import {
   Collection,
   Events,
   GatewayIntentBits,
+  MessageFlags,
   Partials,
 } from 'discord.js'
 import { postMessage } from './activities/post-message.mjs'
@@ -208,12 +209,13 @@ export async function botStart() {
       if (interaction.replied || interaction.deferred) {
         await interaction.followUp({
           content: 'Il y a un problème avec la commande !',
-          ephemeral: true,
+
+          flags: MessageFlags.Ephemeral
         })
       } else {
         await interaction.reply({
           content: 'Il y a un problème avec la commande !',
-          ephemeral: true,
+          flags: MessageFlags.Ephemeral,
         })
       }
     }

@@ -1,4 +1,4 @@
-import { SlashCommandBuilder } from 'discord.js'
+import { MessageFlags, SlashCommandBuilder } from 'discord.js'
 
 import { fetchEvents } from './events.utils.mjs'
 
@@ -7,7 +7,7 @@ const cmd = {
     .setName('events')
     .setDescription('Tous les évènements à venir !'),
   async execute(interaction) {
-    await interaction.deferReply({ ephemeral: true })
+    await interaction.deferReply({ flags: MessageFlags.Ephemeral })
     await fetchEvents(interaction)
   },
 }

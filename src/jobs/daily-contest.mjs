@@ -20,6 +20,7 @@ export async function dailyContest() {
 
   const channel = client.channels.cache.get(process.env.CHANNEL_BLABLA_ID)
 
+
   if (!channel) {
     console.error('Channel not found')
     return

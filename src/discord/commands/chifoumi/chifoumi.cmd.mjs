@@ -3,6 +3,7 @@ import {
   ActionRowBuilder,
   ButtonStyle,
   ButtonBuilder,
+  MessageFlags,
 } from 'discord.js'
 
 import { ChifoumiCustomId } from './chifoumi.custom-id.mjs'
@@ -29,7 +30,7 @@ const cmd = {
 
     await interaction.reply({
       content: `Fais ton choix ! 🤔`,
-      ephemeral: true,
+      flags: MessageFlags.Ephemeral,
       components: [row],
     })
   },
