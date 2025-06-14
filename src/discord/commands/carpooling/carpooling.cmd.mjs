@@ -89,7 +89,7 @@ const cmd = {
           content += `📍 ${formatAddress(carpool.address)}\n`
           content += `🕒 ${new Date(carpool.date).toLocaleString()}\n`
           content += `🚗 Places disponibles : ${carpool.places - confirmed.length}\n`
-          content += `🔗 [Voir le message](${carpool.messageUrl})\n\n`
+          content += `🔗 [Voir le message](https://discord.com/channels/${interaction.guildId}/${interaction.channelId}/${carpool.messageId})\n\n`
 
           if (confirmed.length > 0) {
             content += '**Confirmés :**\n'
