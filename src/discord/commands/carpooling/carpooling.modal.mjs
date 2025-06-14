@@ -151,7 +151,7 @@ const modal = {
         carpooling.forEach((carpool) => {
           const linkButton = new ButtonBuilder()
             .setCustomId(`${CarpoolingCustomId.link}${carpool.messageId}`)
-            .setLabel(`Rejoindre le covoiturage de ${carpool.participants.find(p => p.status === 'leader').name}`)
+            .setLabel(`Rejoindre le covoiturage de ${carpool.name}`)
             .setStyle(ButtonStyle.Secondary)
 
           rows.push(new ActionRowBuilder().addComponents(linkButton))
