@@ -28,16 +28,32 @@ const modal = {
         return
       }
 
-      const addressMatch = address.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/)
-      if (!addressMatch) {
-        await interaction.editReply({
-          content: 'Le lien Google Maps n\'est pas valide. Veuillez copier le lien complet depuis Google Maps.',
-        })
-        return
+      // Coordonnées par défaut
+      const DEFAULT_COORDS = {
+        lat: 49.4412357,
+        lon: 1.0911845,
+        zoom: 11319
       }
 
-      const [_, lat, lon] = addressMatch
-      const addressLabel = address.split('@')[0].trim()
+      // Vérifier si c'est une URL Google Maps ou des coordonnées
+      const isGoogleMapsUrl = address.includes('maps.app.goo.gl') || address.includes('google.com/maps')
+      const coordMatch = address.match(/^(-?\d+\.\d+),(-?\d+\.\d+)(?:,\d+)?$/)
+
+      let addressData = {
+        label: address
+      }
+
+      if (isGoogleMapsUrl) {
+        // Si c'est une URL Google Maps, on l'utilise directement
+        addressData.url = address
+      } else if (coordMatch) {
+        // Si ce sont des coordonnées, on crée l'URL Google Maps
+        const [_, lat, lon] = coordMatch
+        addressData.url = `https://www.google.com/maps?q=${lat},${lon}`
+      } else {
+        // Si c'est juste un texte, on utilise les coordonnées par défaut
+        addressData.url = `https://www.google.com/maps?q=${DEFAULT_COORDS.lat},${DEFAULT_COORDS.lon}&z=${DEFAULT_COORDS.zoom}`
+      }
 
       // Récupération de l'ID de l'événement
       const startMessage = await interaction.channel.fetchStarterMessage()
@@ -91,11 +107,7 @@ const modal = {
       await valhalla('/midgarrd/carpool/create', interaction.user.id, {
         eventId,
         places,
-        address: {
-          label: addressLabel,
-          lat: parseFloat(lat),
-          lon: parseFloat(lon),
-        },
+        address: addressData,
         date: departureDate,
         userId: interaction.user.id,
         name: interaction.user.username,
@@ -113,12 +125,11 @@ const modal = {
         content += 'Aucun covoiturage n\'a été créé pour cet événement.\n'
       } else {
         carpooling.forEach((carpool) => {
-
           const confirmed = carpool.participants.filter(p => p.status === 'confirmed')
           const pending = carpool.participants.filter(p => p.status === 'pending')
 
           content += `### Covoiturage de ${carpool?.name}\n`
-          content += `📍 ${address}\n`
+          content += `📍 ${carpool.address.label}\n`
           content += `🕒 ${new Date(carpool.date).toLocaleString()}\n`
           content += `🚗 Places disponibles : ${carpool.places - confirmed.length}\n\n`
 
@@ -145,18 +156,6 @@ const modal = {
         .setStyle(ButtonStyle.Primary)
 
       rows.push(new ActionRowBuilder().addComponents(createButton))
-
-      // Boutons pour les covoiturages existants
-      if (carpooling.length > 0) {
-        carpooling.forEach((carpool) => {
-          const linkButton = new ButtonBuilder()
-            .setCustomId(`${CarpoolingCustomId.link}${carpool.messageId}`)
-            .setLabel(`Rejoindre le covoiturage de ${carpool.name}`)
-            .setStyle(ButtonStyle.Secondary)
-
-          rows.push(new ActionRowBuilder().addComponents(linkButton))
-        })
-      }
 
       await interaction.editReply({
         content,
