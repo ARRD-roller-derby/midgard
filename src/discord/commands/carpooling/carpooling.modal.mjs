@@ -118,7 +118,7 @@ const modal = {
           const pending = carpool.participants.filter(p => p.status === 'pending')
 
           content += `### Covoiturage de ${carpool?.name}\n`
-          content += `📍 ${carpool.address.label}\n`
+          content += `📍 ${address}\n`
           content += `🕒 ${new Date(carpool.date).toLocaleString()}\n`
           content += `🚗 Places disponibles : ${carpool.places - confirmed.length}\n\n`
 
