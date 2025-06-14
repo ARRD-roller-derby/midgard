@@ -14,23 +14,23 @@ const cmd = {
     .setName('covoit')
     .setDescription('gérer les covoiturages'),
   async execute(interaction, isUpdate = false) {
-
     try {
+      if (!isUpdate) {
+        await interaction.deferReply({ flags: MessageFlags.Ephemeral })
+      }
+
       if (!interaction.channel.isThread()) {
-        await interaction.reply({
+        await interaction.editReply({
           content: 'Cette commande ne peut être utilisée que dans un thread d\'un évènement',
-          flags: MessageFlags.Ephemeral,
         })
         return
       }
 
-      await interaction.deferReply({ flags: MessageFlags.Ephemeral })
       const startMessage = await interaction.channel.fetchStarterMessage()
       const search = startMessage.content.match(/http[s]?:\/\/[^ ]+/g)
       if (!search || search.length === 0) {
-        await interaction.reply({
+        await interaction.editReply({
           content: 'Impossible de trouver l\'URL de l\'événement dans le message initial',
-          flags: MessageFlags.Ephemeral,
         })
         return
       }
@@ -38,9 +38,8 @@ const cmd = {
       const url = search[0]
       const eventId = url.match(/\/([^/)]+)(?:\)|$)/)?.[1]
       if (!eventId) {
-        await interaction.reply({
+        await interaction.editReply({
           content: 'Impossible de trouver l\'ID de l\'événement dans l\'URL',
-          flags: MessageFlags.Ephemeral,
         })
         return
       }
@@ -48,9 +47,8 @@ const cmd = {
       const event = await valhalla(`midgarrd/events/${eventId}`, interaction.user.id)
 
       if (!event) {
-        await interaction.reply({
+        await interaction.editReply({
           content: 'Cet évènement n\'existe pas',
-          flags: MessageFlags.Ephemeral,
         })
         return
       }
@@ -110,18 +108,10 @@ const cmd = {
         })
       }
 
-      if (isUpdate) {
-        await interaction.editReply({
-          content,
-          components: rows,
-        })
-      } else {
-        await interaction.reply({
-          content,
-          components: rows,
-          flags: MessageFlags.Ephemeral,
-        })
-      }
+      await interaction.editReply({
+        content,
+        components: rows,
+      })
     } catch (error) {
       console.error('Erreur lors de l\'exécution de la commande covoiturage:', error)
       if (!interaction.replied && !interaction.deferred) {
