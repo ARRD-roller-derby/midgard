@@ -15,9 +15,10 @@ const cmd = {
     .setDescription('gérer les covoiturages'),
   async execute(interaction, isUpdate = false) {
 
-    console.log(interaction?.channel)
+    console.log('interaction?.channel ====>', interaction?.channel)
+
     try {
-      if (!interaction.channel.isThread()) {
+      if (!interaction?.channel?.isThread()) {
         await interaction.reply({
           content: 'Cette commande ne peut être utilisée que dans un thread d\'un évènement',
           flags: MessageFlags.Ephemeral,
