@@ -1,5 +1,5 @@
 import { valhalla } from '../../../utils/valhalla.mjs'
-import { ButtonBuilder, ActionRowBuilder, ButtonStyle } from 'discord.js'
+import { ButtonBuilder, ActionRowBuilder, ButtonStyle, MessageFlags } from 'discord.js'
 import { CarpoolingCustomId } from './carpooling.custom-id.mjs'
 
 const modal = {
@@ -167,7 +167,7 @@ const modal = {
       if (!interaction.replied && !interaction.deferred) {
         await interaction.reply({
           content: 'Une erreur est survenue lors de la création du covoiturage.',
-          ephemeral: true
+          flags: MessageFlags.Ephemeral
         })
       } else {
         await interaction.editReply({

@@ -16,7 +16,7 @@ const btn = {
 
     if (customId.startsWith(CarpoolingCustomId.link)) {
       const messageId = customId.replace(CarpoolingCustomId.link, '')
-      await valhalla('carpooling/join', interaction.user.id, {
+      await valhalla('midgarrd/carpool/join', interaction.user.id, {
         messageId,
         userId: interaction.user.id,
         name: interaction.user.username,
