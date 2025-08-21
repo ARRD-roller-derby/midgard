@@ -77,13 +77,13 @@ export async function dailyContestResult() {
     `
 
   if (goodUsers.length) {
-    content += `\n### Gagnant${goodUsers.length > 1 ? 's' : ''}
+    content += `\n### Gagnant·e${goodUsers.length > 1 ? '·s' : ''}
     ${goodUsers.map((ua) => `<@${ua.providerAccountId}>`).join(' ')}
     `
   }
 
   if (badUsers.length) {
-    content += `\n### Perdant${badUsers.length > 1 ? 's' : ''}
+    content += `\n### Perdant·e${badUsers.length > 1 ? '·s' : ''}
     ${badUsers.map((ua) => `<@${ua.providerAccountId}>`).join(' ')}
     `
   }
