@@ -162,7 +162,7 @@ function createPresenceRow(
         )
         .setLabel('Absent.e')
         .setStyle(
-          myPresence.status.match(/absent/)
+          myPresence.type.match(/absent/)
             ? ButtonStyle.Danger
             : ButtonStyle.Secondary
         ),
@@ -181,6 +181,7 @@ export async function fetchEvents(interaction) {
     const events = await valhalla('events/next', interaction.user.id)
     const _page = interaction?.customId?.split('-').pop() || 1
 
+    console.log(events)
     const getPage = () => {
       if (_page === 'first') return 1
       if (_page === 'last') return events.length
@@ -228,9 +229,8 @@ export async function fetchEvents(interaction) {
       (p) => p.status === 'présent'
     ).length
 
-    content += `### Participant${
-      numberOfParticipants > 1 ? 's' : ''
-    } (${numberOfParticipants})\n\n`
+    content += `### Participant${numberOfParticipants > 1 ? 's' : ''
+      } (${numberOfParticipants})\n\n`
     content += event.participants
       .reduce((acc, p) => {
         const findType = acc.find((a) => a.type === p.type)
@@ -253,14 +253,14 @@ export async function fetchEvents(interaction) {
         createPagination(page, events.length, eventsCustomId.btn.pagination),
         event.cancelled
           ? new ActionRowBuilder().addComponents(
-              new ButtonBuilder()
-                .setCustomId(
-                  `${eventsCustomId.btn.info}-${event._id}-cancel-${page}`
-                )
-                .setLabel('Annulé')
-                .setDisabled(true)
-                .setStyle(ButtonStyle.Danger)
-            )
+            new ButtonBuilder()
+              .setCustomId(
+                `${eventsCustomId.btn.info}-${event._id}-cancel-${page}`
+              )
+              .setLabel('Annulé')
+              .setDisabled(true)
+              .setStyle(ButtonStyle.Danger)
+          )
           : createPresenceRow(event._id, event.type, myPresence, page),
         confirmPresenceRow(event._id, myPresence, page),
       ],
@@ -281,16 +281,14 @@ export async function fetchEvents(interaction) {
       .map(([status, types]) => {
         const typeText = Object.entries(types)
           .map(([type, names]) => {
-            return `===============\n${
-              names.length
-            } ${type}\n===============\n${names
-              .map((n) => `\n- ${n}`)
-              .join(' ')}`
+            return `===============\n${names.length
+              } ${type}\n===============\n${names
+                .map((n) => `\n- ${n}`)
+                .join(' ')}`
           })
           .join('\n\n')
-        return `Total ${status}: ${
-          Object.values(types).flat().length
-        }\n\n${typeText}`
+        return `Total ${status}: ${Object.values(types).flat().length
+          }\n\n${typeText}`
       })
       .join('\n\n')
 
