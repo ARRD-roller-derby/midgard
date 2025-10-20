@@ -21,7 +21,7 @@ function confirmPresenceRow(
   eventId,
   myPresence = {
     type: '',
-    status: '',
+    type: '',
   },
   page
 ) {
@@ -29,18 +29,18 @@ function confirmPresenceRow(
     new ButtonBuilder()
       .setCustomId(`${eventsCustomId.btn.confirm}-${eventId}-${page}`)
       .setLabel('Présence confirmée')
-      .setDisabled(myPresence.status === 'présent')
+      .setDisabled(myPresence.type === 'présent')
       .setStyle(
-        myPresence.status === 'présent'
+        myPresence.type === 'présent'
           ? ButtonStyle.Success
           : ButtonStyle.Secondary
       ),
     new ButtonBuilder()
       .setCustomId(`${eventsCustomId.btn.notConfirm}-${eventId}-${page}`)
       .setLabel('Présence non confirmée')
-      .setDisabled(myPresence.status === 'absent')
+      .setDisabled(myPresence.type === 'absent')
       .setStyle(
-        myPresence.status === 'à confirmer'
+        myPresence.type === 'à confirmer'
           ? ButtonStyle.Danger
           : ButtonStyle.Secondary
       )
@@ -52,12 +52,12 @@ function createPresenceRow(
   eventType,
   myPresence = {
     type: '',
-    status: '',
+    type: '',
   },
   page
 ) {
   const presence = (type) =>
-    myPresence.type === type && myPresence.status === 'présent'
+    myPresence.type === type && myPresence.type === 'présent'
       ? ButtonStyle.Success
       : ButtonStyle.Secondary
 
@@ -181,7 +181,6 @@ export async function fetchEvents(interaction) {
     const events = await valhalla('events/next', interaction.user.id)
     const _page = interaction?.customId?.split('-').pop() || 1
 
-    console.log(events)
     const getPage = () => {
       if (_page === 'first') return 1
       if (_page === 'last') return events.length
@@ -196,7 +195,7 @@ export async function fetchEvents(interaction) {
       (p) => p.providerAccountId === interaction.user.id
     ) || {
       type: '',
-      status: '',
+      type: '',
     }
 
     if (!event) {
@@ -226,7 +225,7 @@ export async function fetchEvents(interaction) {
     // === Ajout des participants ===
 
     const numberOfParticipants = event.participants.filter(
-      (p) => p.status === 'présent'
+      (p) => p.type === 'présent'
     ).length
 
     content += `### Participant${numberOfParticipants > 1 ? 's' : ''
@@ -266,19 +265,19 @@ export async function fetchEvents(interaction) {
       ],
     }
 
-    const participantsByStatus = event.participants.reduce((acc, p) => {
-      if (!acc[p.status]) {
-        acc[p.status] = {}
+    const participantsBytype = event.participants.reduce((acc, p) => {
+      if (!acc[p.type]) {
+        acc[p.type] = {}
       }
-      if (!acc[p.status][p.type]) {
-        acc[p.status][p.type] = []
+      if (!acc[p.type][p.type]) {
+        acc[p.type][p.type] = []
       }
-      acc[p.status][p.type].push(p.name)
+      acc[p.type][p.type].push(p.name)
       return acc
     }, {})
 
-    const participantText = Object.entries(participantsByStatus)
-      .map(([status, types]) => {
+    const participantText = Object.entries(participantsBytype)
+      .map(([type, types]) => {
         const typeText = Object.entries(types)
           .map(([type, names]) => {
             return `===============\n${names.length
@@ -287,7 +286,7 @@ export async function fetchEvents(interaction) {
                 .join(' ')}`
           })
           .join('\n\n')
-        return `Total ${status}: ${Object.values(types).flat().length
+        return `Total ${type}: ${Object.values(types).flat().length
           }\n\n${typeText}`
       })
       .join('\n\n')
