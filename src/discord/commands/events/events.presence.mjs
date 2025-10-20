@@ -10,7 +10,6 @@ export async function eventsPresence(interaction) {
 
   await valhalla(`events/participation`, interaction.user.id, {
     eventId,
-    participation: type,
-    status: type.match(/absent/) ? 'absent' : 'present',
+    participation: type
   })
 }
