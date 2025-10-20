@@ -11,12 +11,14 @@ export async function valhalla(endpoint, userId, body) {
     headers: {
       'Content-Type': 'application/json',
       Authorization: 'Bearer ' + process.env.VALHALLA_TOKEN,
-      provider_id: userId,
+      "x-provider-id": userId,
     },
     body: JSON.stringify(body),
   })
 
   const resJson = await res.json()
+
+  console.log(resJson, userId)
   const { events } = resJson
   // legacy compatibility
   if (!events) return resJson
