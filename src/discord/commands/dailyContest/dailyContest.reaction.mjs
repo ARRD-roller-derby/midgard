@@ -17,34 +17,28 @@ export async function dailyContestReaction(interaction, user, type) {
 
   await db()
 
-  const dailyContest = await DailyContests.findOne({
-    messageId,
-  })
-
-  if (!dailyContest) return
-
-  const userAnswer = dailyContest.userAnswers.find(
-    (ua) => ua.providerAccountId === providerAccountId
-  ) || {
-    providerAccountId,
-    answers: [],
-  }
-
   if (type === 'add') {
-    userAnswer.answers.push(emoji)
-  } else {
-    userAnswer.answers = userAnswer.answers.filter((a) => a !== emoji)
-  }
-  await DailyContests.findOneAndUpdate(
-    { messageId },
-
-    {
-      userAnswers: [
-        ...dailyContest.userAnswers.filter(
-          (ua) => ua.providerAccountId !== providerAccountId
-        ),
-        userAnswer,
-      ],
+    const result = await DailyContests.updateOne(
+      { messageId, 'userAnswers.providerAccountId': providerAccountId },
+      { $addToSet: { 'userAnswers.$.answers': emoji } }
+    )
+    if (!result.matchedCount) {
+      const inserted = await DailyContests.updateOne(
+        { messageId, 'userAnswers.providerAccountId': { $ne: providerAccountId } },
+        { $push: { userAnswers: { providerAccountId, answers: [emoji] } } }
+      )
+      // Another event may have created the participant in the meantime.
+      if (!inserted.matchedCount) {
+        await DailyContests.updateOne(
+          { messageId, 'userAnswers.providerAccountId': providerAccountId },
+          { $addToSet: { 'userAnswers.$.answers': emoji } }
+        )
+      }
     }
-  )
+  } else {
+    await DailyContests.updateOne(
+      { messageId, 'userAnswers.providerAccountId': providerAccountId },
+      { $pull: { 'userAnswers.$.answers': emoji } }
+    )
+  }
 }
